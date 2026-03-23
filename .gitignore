@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-lock.yaml
+
+# Frontend build
+/frontend/dist/
+/dist/
+/build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Docker
+*.local.env
+docker-compose.override.yml
+
+# Vite / TypeScript
+*.tsbuildinfo
+
+# Misc
+.coverage
+.cache
+coverage/
