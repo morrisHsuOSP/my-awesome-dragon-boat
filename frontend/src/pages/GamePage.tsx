@@ -10,7 +10,11 @@ const KEYS_P2 = ['j', 'l']
 type GameState = 'waiting' | 'running' | 'finished'
 
 export default function GamePage() {
-  const { state } = useLocation() as { state: { p1: string; p2: string } }
+  const location = useLocation()
+  const { state } = location as unknown as { state: { p1: string; p2: string } }
+  const params = new URLSearchParams(location.search)
+  const p1Name = state?.p1 ?? params.get('p1') ?? ''
+  const p2Name = state?.p2 ?? params.get('p2') ?? ''
   const navigate = useNavigate()
 
   const [pos1, setPos1] = useState(0)
@@ -42,8 +46,8 @@ export default function GamePage() {
   )
 
   useEffect(() => {
-    if (!state?.p1 || !state?.p2) { navigate('/'); return }
-  }, [state, navigate])
+    if (!p1Name || !p2Name) { navigate('/'); return }
+  }, [p1Name, p2Name, navigate])
 
   useEffect(() => {
     if (gameState !== 'running') return
@@ -59,7 +63,7 @@ export default function GamePage() {
           const next = Math.min(prev + PADDLE_STEP, TRACK_WIDTH)
           if (next >= TRACK_WIDTH) {
             const ms = Date.now() - startTimeRef.current
-            endGame(state.p1, ms)
+            endGame(p1Name, ms)
           }
           return next
         })
@@ -72,7 +76,7 @@ export default function GamePage() {
           const next = Math.min(prev + PADDLE_STEP, TRACK_WIDTH)
           if (next >= TRACK_WIDTH) {
             const ms = Date.now() - startTimeRef.current
-            endGame(state.p2, ms)
+            endGame(p2Name, ms)
           }
           return next
         })
@@ -105,7 +109,7 @@ export default function GamePage() {
         {/* Player 1 lane */}
         <div>
           <div style={{ marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
-            <span>{state?.p1} <small style={{ color: '#aaa' }}>(A / D)</small></span>
+            <span>{p1Name} <small style={{ color: '#aaa' }}>(A / D)</small></span>
             <span style={{ color: '#aaa' }}>{Math.round(pct1)}%</span>
           </div>
           <div style={{ background: '#1a3a6a', borderRadius: 8, height: 48, position: 'relative', overflow: 'hidden' }}>
@@ -118,7 +122,7 @@ export default function GamePage() {
         {/* Player 2 lane */}
         <div>
           <div style={{ marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
-            <span>{state?.p2} <small style={{ color: '#aaa' }}>(J / L)</small></span>
+            <span>{p2Name} <small style={{ color: '#aaa' }}>(J / L)</small></span>
             <span style={{ color: '#aaa' }}>{Math.round(pct2)}%</span>
           </div>
           <div style={{ background: '#1a3a6a', borderRadius: 8, height: 48, position: 'relative', overflow: 'hidden' }}>
