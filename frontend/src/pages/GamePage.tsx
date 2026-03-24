@@ -22,6 +22,7 @@ export default function GamePage() {
   const [gameState, setGameState] = useState<GameState>('waiting')
   const [winner, setWinner] = useState('')
   const [duration, setDuration] = useState(0)
+  const [countdown, setCountdown] = useState<number | null>(null)
 
   const startTimeRef = useRef<number>(0)
   const lastKeyRef = useRef<{ p1: string; p2: string }>({ p1: '', p2: '' })
@@ -97,6 +98,30 @@ export default function GamePage() {
     startTimeRef.current = Date.now()
   }
 
+  function beginCountdown() {
+    // start a 5s countdown (5,4,3,2,1, Start)
+    if (countdown !== null) return
+    setCountdown(5)
+  }
+
+  useEffect(() => {
+    if (countdown === null) return
+
+    if (countdown > 0) {
+      const id = setTimeout(() => setCountdown(countdown - 1), 1000)
+      return () => clearTimeout(id)
+    }
+
+    // countdown === 0 -> show "Start" for 1s then begin
+    if (countdown === 0) {
+      const id = setTimeout(() => {
+        setCountdown(null)
+        handleStart()
+      }, 1000)
+      return () => clearTimeout(id)
+    }
+  }, [countdown])
+
   const pct1 = (pos1 / TRACK_WIDTH) * 100
   const pct2 = (pos2 / TRACK_WIDTH) * 100
 
@@ -134,7 +159,11 @@ export default function GamePage() {
 
       {/* Controls */}
       {gameState === 'waiting' && (
-        <button style={{ background: '#f0c040', color: '#000', fontSize: '1.1rem' }} onClick={handleStart}>
+        <button
+          style={{ background: '#f0c040', color: '#000', fontSize: '1.1rem' }}
+          onClick={beginCountdown}
+          disabled={countdown !== null}
+        >
           Start Race!
         </button>
       )}
@@ -147,12 +176,20 @@ export default function GamePage() {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <h2>🏆 {winner} wins!</h2>
           <p style={{ color: '#aaa' }}>Time: {(duration / 1000).toFixed(2)}s</p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-            <button style={{ background: '#f0c040', color: '#000' }} onClick={handleStart}>Race Again</button>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+            <button style={{ background: '#f0c040', color: '#000' }} onClick={beginCountdown}>Race Again</button>
             <button style={{ background: '#1a3a6a', color: '#fff' }} onClick={() => navigate('/leaderboard', { state: { highlight: winner } })}>
               View Leaderboard
             </button>
             <button style={{ background: '#333', color: '#fff' }} onClick={() => navigate('/')}>Home</button>
+          </div>
+        </div>
+      )}
+
+      {countdown !== null && (
+        <div style={{ position: 'fixed', left: 0, top: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.6)', zIndex: 9999 }}>
+          <div style={{ fontSize: 96, color: '#fff', background: '#111', padding: '24px 40px', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.6)' }}>
+            {countdown > 0 ? countdown : 'Start'}
           </div>
         </div>
       )}
