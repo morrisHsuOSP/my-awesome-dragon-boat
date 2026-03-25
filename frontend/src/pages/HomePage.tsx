@@ -23,7 +23,7 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: 24 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh', gap: 24, paddingTop: 48 }}>
       <h1>🐉 Dragon Boat Race</h1>
       <p style={{ color: '#aaa' }}>2-player local race — first to the finish wins!</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 280 }}>
