@@ -63,7 +63,7 @@
         sctx.drawImage(ship1Img, 0, 0, SHIP_WIDTH, SHIP_HEIGHT);
         sctx.globalCompositeOperation = "source-over";
     };
-    ship1Img.src = "/boat.png";
+    ship1Img.src = "/games/dragon-boat/assets/boat.png";
 
     // --- 動態背景函式 (增強版) ---
     function drawDynamicRiver(timeVal) {

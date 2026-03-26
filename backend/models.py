@@ -18,3 +18,13 @@ class Score(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     duration_ms = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class TypingScore(Base):
+    __tablename__ = "typing_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    player_name = Column(String, nullable=False, index=True)
+    wpm = Column(Integer, nullable=False)
+    accuracy = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

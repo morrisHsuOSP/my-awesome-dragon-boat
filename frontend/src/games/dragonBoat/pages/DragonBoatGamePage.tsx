@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { submitScore } from '../api'
+import { submitDragonBoatScore } from '../api'
 
-export default function GamePage() {
+export default function DragonBoatGamePage() {
   const location = useLocation()
   const { state } = location as unknown as { state: { p1: string; p2: string } }
   const params = new URLSearchParams(location.search)
@@ -13,16 +13,17 @@ export default function GamePage() {
   const [showButtons, setShowButtons] = useState(false)
 
   useEffect(() => {
-    if (!p1Name || !p2Name) { navigate('/'); return }
+    if (!p1Name || !p2Name) {
+      navigate('/games/dragon-boat')
+    }
   }, [p1Name, p2Name, navigate])
 
   useEffect(() => {
-    // Pass player names to game.js via window
     ;(window as any).__P1_NAME = p1Name
     ;(window as any).__P2_NAME = p2Name
 
     const script = document.createElement('script')
-    script.src = '/game.js?t=' + Date.now()
+    script.src = '/games/dragon-boat/game.js?t=' + Date.now()
     document.body.appendChild(script)
     scriptRef.current = script
 
@@ -30,9 +31,10 @@ export default function GamePage() {
       setShowButtons(true)
       const detail = (e as CustomEvent).detail as { winner: string; duration_ms: number }
       if (detail?.winner) {
-        submitScore(detail.winner, detail.duration_ms).catch(() => {})
+        submitDragonBoatScore(detail.winner, detail.duration_ms).catch(() => {})
       }
     }
+
     document.addEventListener('game-over', onGameOver)
 
     return () => {
@@ -46,16 +48,18 @@ export default function GamePage() {
   }, [p1Name, p2Name])
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      background: '#1a1a2e',
-      gap: 16,
-    }}>
-      <h1>🐉 {p1Name} vs {p2Name}</h1>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: '#1a1a2e',
+        gap: 16,
+      }}
+    >
+      <h1>{p1Name} vs {p2Name}</h1>
       <canvas
         id="gameCanvas"
         width={1200}
@@ -64,10 +68,12 @@ export default function GamePage() {
           border: '2px solid #333',
           borderRadius: '4px',
           boxShadow: '0 0 20px rgba(0, 100, 255, 0.3)',
+          maxWidth: '96vw',
+          height: 'auto',
         }}
       />
       {showButtons && (
-        <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+        <div style={{ display: 'flex', gap: 12, marginTop: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
           <button
             style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
             onClick={() => {
@@ -77,17 +83,11 @@ export default function GamePage() {
           >
             Race Again
           </button>
-          <button
-            style={{ background: '#1a3a6a', color: '#fff' }}
-            onClick={() => navigate('/leaderboard')}
-          >
+          <button style={{ background: '#1a3a6a', color: '#fff' }} onClick={() => navigate('/games/dragon-boat/leaderboard')}>
             View Leaderboard
           </button>
-          <button
-            style={{ background: '#333', color: '#fff' }}
-            onClick={() => navigate('/')}
-          >
-            Home
+          <button style={{ background: '#24334f', color: '#fff' }} onClick={() => navigate('/')}>
+            Back To Game Hub
           </button>
         </div>
       )}

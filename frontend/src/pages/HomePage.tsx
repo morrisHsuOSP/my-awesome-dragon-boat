@@ -1,42 +1,63 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createUser } from '../api'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const [p1, setP1] = useState('')
-  const [p2, setP2] = useState('')
-  const [error, setError] = useState('')
-
-  async function handleStart() {
-    setError('')
-    const name1 = p1.trim()
-    const name2 = p2.trim()
-    if (!name1 || !name2) { setError('Both player names are required.'); return }
-    if (name1 === name2) { setError('Player names must be different.'); return }
-    try {
-      await Promise.all([createUser(name1), createUser(name2)])
-      navigate('/game', { state: { p1: name1, p2: name2 } })
-    } catch {
-      setError('Failed to register players. Please try again.')
-    }
-  }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh', gap: 24, paddingTop: 48 }}>
-      <h1>🐉 Dragon Boat Race</h1>
-      <p style={{ color: '#aaa' }}>2-player local race — first to the finish wins!</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 280 }}>
-        <label>Player 1 name (keys: A / D)</label>
-        <input value={p1} onChange={e => setP1(e.target.value)} placeholder="e.g. Alice" maxLength={20} />
-        <label>Player 2 name (keys: J / L)</label>
-        <input value={p2} onChange={e => setP2(e.target.value)} placeholder="e.g. Bob" maxLength={20} />
-        {error && <p style={{ color: '#f55' }}>{error}</p>}
-        <button style={{ background: '#f0c040', color: '#000', marginTop: 8 }} onClick={handleStart}>
-          Start Race
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 30,
+        padding: '32px 20px',
+        background: 'radial-gradient(circle at 10% 20%, rgba(43, 89, 163, 0.35), transparent 45%), radial-gradient(circle at 85% 80%, rgba(28, 59, 111, 0.35), transparent 42%), #0a1628',
+      }}
+    >
+      <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', letterSpacing: 1.2 }}>Your Game Awaits</h1>
+      <p style={{ color: '#a9bfd7', maxWidth: 700, textAlign: 'center' }}>
+        Pick a challenge and jump right in.
+      </p>
+
+      <div style={{ display: 'flex', gap: 18, width: 'min(980px, 100%)', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <button
+          onClick={() => navigate('/games/dragon-boat')}
+          style={{
+            flex: '1 1 320px',
+            minHeight: 220,
+            textAlign: 'left',
+            padding: 24,
+            borderRadius: 14,
+            background: 'linear-gradient(140deg, #1a3a6a 0%, #113660 45%, #0b2748 100%)',
+            color: '#fff',
+            border: '1px solid #2f5d9b',
+          }}
+        >
+          <h2 style={{ marginBottom: 10 }}>Dragon Boat Race</h2>
+          <p style={{ color: '#d7e6ff', lineHeight: 1.55, fontWeight: 500 }}>
+            2-player local race game. Alternate keys to push your dragon boat to the finish line first.
+          </p>
         </button>
-        <button style={{ background: '#1a3a6a', color: '#fff' }} onClick={() => navigate('/leaderboard')}>
-          Leaderboard
+
+        <button
+          onClick={() => navigate('/games/speed-typing')}
+          style={{
+            flex: '1 1 320px',
+            minHeight: 220,
+            textAlign: 'left',
+            padding: 24,
+            borderRadius: 14,
+            background: 'linear-gradient(140deg, #27472a 0%, #1f5f3e 45%, #194832 100%)',
+            color: '#fff',
+            border: '1px solid #3d7f55',
+          }}
+        >
+          <h2 style={{ marginBottom: 10 }}>Speed Typing Challenge</h2>
+          <p style={{ color: '#daf5e4', lineHeight: 1.55, fontWeight: 500 }}>
+            Upcoming game mode. Backend and frontend scaffolding are ready for the next feature iteration.
+          </p>
         </button>
       </div>
     </div>
