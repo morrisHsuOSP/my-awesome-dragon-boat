@@ -21,11 +21,10 @@ export default function HomePage() {
         Pick a challenge and jump right in.
       </p>
 
-      <div style={{ display: 'flex', gap: 18, width: 'min(980px, 100%)', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 18, width: 'min(480px, 100%)' }}>
         <button
           onClick={() => navigate('/games/dragon-boat')}
           style={{
-            flex: '1 1 320px',
             minHeight: 220,
             textAlign: 'left',
             padding: 24,
@@ -44,7 +43,6 @@ export default function HomePage() {
         <button
           onClick={() => navigate('/games/speed-typing')}
           style={{
-            flex: '1 1 320px',
             minHeight: 220,
             textAlign: 'left',
             padding: 24,
@@ -57,6 +55,24 @@ export default function HomePage() {
           <h2 style={{ marginBottom: 10 }}>Speed Typing Challenge</h2>
           <p style={{ color: '#daf5e4', lineHeight: 1.55, fontWeight: 500 }}>
             Upcoming game mode. Backend and frontend scaffolding are ready for the next feature iteration.
+          </p>
+        </button>
+
+        <button
+          onClick={() => navigate('/games/co-op-challenge')}
+          style={{
+            minHeight: 220,
+            textAlign: 'left',
+            padding: 24,
+            borderRadius: 14,
+            background: 'linear-gradient(140deg, #4a2a6a 0%, #3b1a5f 45%, #2a1048 100%)',
+            color: '#fff',
+            border: '1px solid #7b4db5',
+          }}
+        >
+          <h2 style={{ marginBottom: 10 }}>Co-op Challenge</h2>
+          <p style={{ color: '#e4d7ff', lineHeight: 1.55, fontWeight: 500 }}>
+            2-player co-op mode. Work together to complete the challenge.
           </p>
         </button>
       </div>
