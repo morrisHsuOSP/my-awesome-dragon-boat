@@ -7,6 +7,7 @@ import DragonBoatGamePage from './games/dragonBoat/pages/DragonBoatGamePage'
 import DragonBoatLeaderboardPage from './games/dragonBoat/pages/DragonBoatLeaderboardPage'
 import SpeedTypingPage from './games/speedTyping/pages/SpeedTypingPage'
 import CoOpChallengePage from './games/coOpChallenge/pages/CoOpChallengePage'
+import CoOpGamePage from './games/coOpChallenge/pages/CoOpGamePage'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/games/dragon-boat/leaderboard" element={<DragonBoatLeaderboardPage />} />
         <Route path="/games/speed-typing" element={<SpeedTypingPage />} />
         <Route path="/games/co-op-challenge" element={<CoOpChallengePage />} />
+        <Route path="/games/co-op-challenge/play" element={<CoOpGamePage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
