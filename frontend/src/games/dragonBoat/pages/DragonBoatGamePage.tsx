@@ -1,84 +1,137 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { submitDragonBoatScore } from '../api'
+import styles from './DragonBoatGamePage.module.css'
+import { DRAGON_BOAT_EVENTS, type GameOverDetail, type RaceStartDetail } from '../raceEvents'
+
+function formatTime(ms: number) {
+  return (ms / 1000).toFixed(2) + 's'
+}
 
 export default function DragonBoatGamePage() {
   const location = useLocation()
-  const { state } = location as unknown as { state: { p1: string; p2: string } }
+  const { state } = location as unknown as {
+    state?: { p1Email?: string; p2Email?: string; p1?: string; p2?: string }
+  }
   const params = new URLSearchParams(location.search)
-  const p1Name = state?.p1 ?? params.get('p1') ?? ''
-  const p2Name = state?.p2 ?? params.get('p2') ?? ''
+  const p1Email = state?.p1Email ?? params.get('p1Email') ?? state?.p1 ?? params.get('p1') ?? ''
+  const p2Email = state?.p2Email ?? params.get('p2Email') ?? state?.p2 ?? params.get('p2') ?? ''
+  const p1Name = p1Email.split('@')[0] || p1Email
+  const p2Name = p2Email.split('@')[0] || p2Email
   const navigate = useNavigate()
   const scriptRef = useRef<HTMLScriptElement | null>(null)
+  const raceStartRef = useRef<number | null>(null)
   const [showButtons, setShowButtons] = useState(false)
+  const [timerMs, setTimerMs] = useState(0)
+  const [isRaceRunning, setIsRaceRunning] = useState(false)
+  const [racePhase, setRacePhase] = useState<'countdown' | 'racing' | 'finished'>('countdown')
 
   useEffect(() => {
-    if (!p1Name || !p2Name) {
+    if (!p1Email || !p2Email) {
       navigate('/games/dragon-boat')
     }
-  }, [p1Name, p2Name, navigate])
+  }, [p1Email, p2Email, navigate])
 
   useEffect(() => {
     ;(window as any).__P1_NAME = p1Name
     ;(window as any).__P2_NAME = p2Name
+    ;(window as any).__P1_USER = p1Email
+    ;(window as any).__P2_USER = p2Email
+    ;(window as any).__DRAGON_BOAT_EVENTS = DRAGON_BOAT_EVENTS
 
     const script = document.createElement('script')
     script.src = '/games/dragon-boat/game.js?t=' + Date.now()
     document.body.appendChild(script)
     scriptRef.current = script
 
+    const onRaceStart = (e: Event) => {
+      const detail = (e as CustomEvent).detail as RaceStartDetail
+      raceStartRef.current = detail?.start_time ?? Date.now()
+      setTimerMs(0)
+      setShowButtons(false)
+      setIsRaceRunning(true)
+      setRacePhase('racing')
+    }
+
     const onGameOver = (e: Event) => {
       setShowButtons(true)
-      const detail = (e as CustomEvent).detail as { winner: string; duration_ms: number }
+      const detail = (e as CustomEvent).detail as GameOverDetail
+      setIsRaceRunning(false)
+      setRacePhase('finished')
+      if (typeof detail?.duration_ms === 'number') {
+        setTimerMs(detail.duration_ms)
+      }
       if (detail?.winner) {
-        submitDragonBoatScore(detail.winner, detail.duration_ms).catch(() => {})
+        const winnerUser = detail.winner === p1Name ? p1Email : detail.winner === p2Name ? p2Email : detail.winner
+        submitDragonBoatScore(winnerUser, detail.duration_ms).catch(() => {})
       }
     }
 
-    document.addEventListener('game-over', onGameOver)
+    document.addEventListener(DRAGON_BOAT_EVENTS.RACE_START, onRaceStart)
+    document.addEventListener(DRAGON_BOAT_EVENTS.GAME_OVER, onGameOver)
 
     return () => {
       if (scriptRef.current && scriptRef.current.parentNode) {
         scriptRef.current.parentNode.removeChild(scriptRef.current)
       }
-      document.removeEventListener('game-over', onGameOver)
+      document.removeEventListener(DRAGON_BOAT_EVENTS.RACE_START, onRaceStart)
+      document.removeEventListener(DRAGON_BOAT_EVENTS.GAME_OVER, onGameOver)
       delete (window as any).__P1_NAME
       delete (window as any).__P2_NAME
+      delete (window as any).__P1_USER
+      delete (window as any).__P2_USER
+      delete (window as any).__DRAGON_BOAT_EVENTS
     }
-  }, [p1Name, p2Name])
+  }, [p1Name, p2Name, p1Email, p2Email])
+
+  useEffect(() => {
+    if (!isRaceRunning) {
+      return
+    }
+
+    const timer = setInterval(() => {
+      if (raceStartRef.current) {
+        setTimerMs(Date.now() - raceStartRef.current)
+      }
+    }, 50)
+
+    return () => clearInterval(timer)
+  }, [isRaceRunning])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        background: '#1a1a2e',
-        gap: 16,
-      }}
-    >
-      <h1>{p1Name} vs {p2Name}</h1>
+    <div className={styles.page}>
+      <h1 className={styles.title}>Dragon Boat Championship</h1>
+
+      <div className={styles.topBar}>
+        <div className={styles.timerCard}>
+          <div className={styles.timerHeader}>
+            <span className={styles.liveBadge}>
+              <span className={styles.liveDot} />
+              LIVE
+            </span>
+            <span className={styles.phaseLabel}>{racePhase === 'countdown' ? 'Countdown' : racePhase === 'racing' ? 'Race Timer' : 'Finished'}</span>
+          </div>
+          <div className={styles.timeValue}>{racePhase === 'countdown' ? 'Ready...' : formatTime(timerMs)}</div>
+        </div>
+      </div>
+
       <canvas
         id="gameCanvas"
         width={1200}
         height={540}
-        style={{
-          border: '2px solid #333',
-          borderRadius: '4px',
-          boxShadow: '0 0 20px rgba(0, 100, 255, 0.3)',
-          maxWidth: '96vw',
-          height: 'auto',
-        }}
+        className={styles.canvas}
       />
       {showButtons && (
-        <div style={{ display: 'flex', gap: 12, marginTop: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div className={styles.actionButtons}>
           <button
             style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
             onClick={() => {
               setShowButtons(false)
-              document.dispatchEvent(new Event('game-reset'))
+              setIsRaceRunning(false)
+              setTimerMs(0)
+              setRacePhase('countdown')
+              raceStartRef.current = null
+              document.dispatchEvent(new Event(DRAGON_BOAT_EVENTS.GAME_RESET))
             }}
           >
             Race Again

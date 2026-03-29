@@ -23,6 +23,7 @@ export default function DragonBoatLeaderboardPage() {
   }, [])
 
   const highlight = state?.highlight
+  const toDisplayName = (value: string) => value.split('@')[0] || value
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40, gap: 24 }}>
@@ -54,7 +55,7 @@ export default function DragonBoatLeaderboardPage() {
                 <td style={{ padding: 8, textAlign: 'center' }}>
                   {e.rank === 1 ? '1' : e.rank === 2 ? '2' : e.rank === 3 ? '3' : e.rank}
                 </td>
-                <td style={{ padding: 8 }}>{e.user_name}{e.user_name === highlight ? ' <- you' : ''}</td>
+                <td style={{ padding: 8 }}>{toDisplayName(e.user_name)}{e.user_name === highlight ? ' <- you' : ''}</td>
                 <td style={{ padding: 8, textAlign: 'right' }}>{(e.duration_ms / 1000).toFixed(2)}</td>
               </tr>
             ))}
