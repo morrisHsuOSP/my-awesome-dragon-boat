@@ -64,7 +64,7 @@ npm run dev   # http://localhost:3000
 
 ## Dragon Boat Controls
 
-1. Enter names for Player 1 and Player 2 in Dragon Boat setup.
+1. Enter email addresses for Player 1 and Player 2 in Dragon Boat setup.
 2. Click Start Race.
 3. Alternate your keys to paddle — you must alternate, same key twice does nothing!
    - Player 1: Arrow Left / Arrow Right

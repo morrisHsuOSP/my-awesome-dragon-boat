@@ -21,3 +21,24 @@ export async function getDragonBoatLeaderboard() {
   const res = await API.get('/api/dragon-boat/leaderboard')
   return res.data as { rank: number; user_name: string; duration_ms: number }[]
 }
+
+export interface DragonBoatChallengeFeedItem {
+  wall_event_key: string
+  wall_event_type: string
+  occurred_at: string
+  challenger_name: string
+  challenged_name: string
+  old_rank: number
+  new_rank: number
+  delta_ms: number
+  headline: string
+  body: string
+  tone: string
+  priority: 'high' | 'medium' | 'low'
+  scenario: string
+}
+
+export async function getDragonBoatChallengeFeed(limit = 5) {
+  const res = await API.get('/api/dragon-boat/challenge-feed', { params: { limit } })
+  return res.data as DragonBoatChallengeFeedItem[]
+}
