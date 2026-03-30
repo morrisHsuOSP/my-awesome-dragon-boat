@@ -43,7 +43,7 @@ export default function CoOpGamePage() {
       setAnalysisError(null)
 
       try {
-        const result = await submitCoOpAnalysis(detail.p1_timestamps, detail.p2_timestamps)
+        const result = await submitCoOpAnalysis(p1Name, p2Name, detail.duration_ms, detail.p1_timestamps, detail.p2_timestamps)
         setAnalysis(result.analysis)
       } catch (err) {
         setAnalysisError(err instanceof Error ? err.message : 'Analysis request failed. Please try again later.')
