@@ -45,8 +45,8 @@ export default function CoOpGamePage() {
       try {
         const result = await submitCoOpAnalysis(detail.p1_timestamps, detail.p2_timestamps)
         setAnalysis(result.analysis)
-      } catch {
-        setAnalysisError('AI 分析請求失敗，請稍後再試。')
+      } catch (err) {
+        setAnalysisError(err instanceof Error ? err.message : 'Analysis request failed. Please try again later.')
       } finally {
         setAnalysisLoading(false)
       }
