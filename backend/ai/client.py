@@ -1,7 +1,8 @@
-import os
+import asyncio
 import json
+import os
 
-from openai import AsyncOpenAI
+from copilot import CopilotClient, PermissionHandler, SubprocessConfig
 
 SYSTEM_PROMPT = (
     "這是一個龍舟遊戲的賽後分析,"
@@ -11,16 +12,24 @@ SYSTEM_PROMPT = (
     "請用繁體中文回答。"
 )
 
+_client: CopilotClient | None = None
+
+
+async def _get_client() -> CopilotClient:
+    global _client
+    if _client is None:
+        github_token = os.getenv("GITHUB_TOKEN")
+        config = SubprocessConfig(github_token=github_token) if github_token else None
+        _client = CopilotClient(config)
+        await _client.start()
+    return _client
+
 
 async def analyze_coop_performance(
     p1_timestamps: list[float],
     p2_timestamps: list[float],
 ) -> str:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("OPENAI_API_KEY environment variable is not set")
-
-    client = AsyncOpenAI(api_key=api_key)
+    client = await _get_client()
 
     user_message = json.dumps(
         {
@@ -30,14 +39,26 @@ async def analyze_coop_performance(
         ensure_ascii=False,
     )
 
-    response = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_message},
-        ],
-        temperature=0.7,
-        max_tokens=1024,
-    )
+    response_text = ""
+    done = asyncio.Event()
 
-    return response.choices[0].message.content or ""
+    async with await client.create_session(
+        on_permission_request=PermissionHandler.approve_all,
+        model="gpt-4o-mini",
+        system_message={"mode": "replace", "content": SYSTEM_PROMPT},
+        available_tools=[],
+        infinite_sessions={"enabled": False},
+    ) as session:
+
+        def on_event(event):
+            nonlocal response_text
+            if event.type.value == "assistant.message":
+                response_text = event.data.content
+            elif event.type.value == "session.idle":
+                done.set()
+
+        session.on(on_event)
+        await session.send(user_message)
+        await done.wait()
+
+    return response_text or ""

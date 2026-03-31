@@ -52,19 +52,21 @@ npm install
 npm run dev   # http://localhost:3000
 ```
 
-## Secrets / OpenAI
+## Secrets / GitHub Copilot
 
-- Copy `.env.example` to `.env` in the project root and set your real API keys. Example:
+- Copy `.env.example` to `.env` in the project root and set your GitHub token. Example:
 
 ```
-OPENAI_API_KEY=sk-REPLACE_WITH_YOUR_KEY
+GITHUB_TOKEN=ghp_REPLACE_WITH_YOUR_TOKEN
 ```
+
+- A GitHub account with an active **Copilot subscription** is required for the AI analysis feature.
 
 - `.env` is ignored by git (see `.gitignore`). Commit only `.env.example` (it contains a placeholder and instructions) so collaborators know which variables to provide.
 
 - When running with Docker Compose the `.env` file is automatically loaded by `docker compose up`.
 
-- For CI or production, store `OPENAI_API_KEY` in your platform's secrets manager (GitHub Actions secrets, Azure Key Vault, etc.) rather than committing it.
+- For CI or production, store `GITHUB_TOKEN` in your platform's secrets manager (GitHub Actions secrets, Azure Key Vault, etc.) rather than committing it.
 
 ## Frontend Routes
 
