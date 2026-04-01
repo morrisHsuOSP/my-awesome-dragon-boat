@@ -367,7 +367,7 @@ export default function SpeedTypingPage() {
               })}
             </div>
             <p style={{ color: '#a9bfd7', marginTop: 8, textAlign: 'center', fontSize: 14 }}>
-              Quote {quoteIdx + 1} / {quotes.length} — by <em>{quotes[quoteIdx]?.author}</em>
+              — by <em>{quotes[quoteIdx]?.author}</em>
             </p>
           </div>
         )}
