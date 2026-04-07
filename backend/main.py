@@ -4,6 +4,7 @@ from database import engine
 import models
 from games.dragon_boat.router import router as dragon_boat_router
 from games.speed_typing.router import router as speed_typing_router
+from games.vertical_game.router import router as vertical_game_router
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -19,6 +20,7 @@ app.add_middleware(
 
 app.include_router(dragon_boat_router)
 app.include_router(speed_typing_router)
+app.include_router(vertical_game_router)
 
 @app.get("/health")
 def health():
