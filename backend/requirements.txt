@@ -3,4 +3,5 @@ uvicorn==0.29.0
 sqlalchemy==2.0.29
 psycopg2-binary==2.9.9
 pydantic==2.6.4
-github-copilot-sdk>=0.2.0
+azure-ai-inference>=1.0.0b9
+azure-core>=1.30.0

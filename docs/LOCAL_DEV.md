@@ -200,6 +200,6 @@ Invoke-RestMethod -Uri http://localhost:8000/api/co-op-challenge/analyze `
 | `psycopg2` install fails on Windows | Use `pip install psycopg2-binary` (already in requirements.txt) |
 | Port 5432 already in use | Stop any local PostgreSQL service or change the port mapping in `docker-compose.dev.yml` |
 | Port 8000 already in use | Kill the process: `Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess \| Stop-Process` |
-| `GITHUB_TOKEN` not set | The `/analyze` endpoint returns HTTP 502 with an error message. Generate a PAT at https://github.com/settings/tokens |
-| Copilot SDK auth error | Ensure your GitHub account has an active Copilot subscription |
+| `GITHUB_TOKEN` not set | The `/analyze` endpoint returns HTTP 502 with an error message because AI authentication fails. |
+| AI rate limit | You may have exceeded your GitHub Models quota/rate limit. |
 | `co_op_results` table missing columns after model changes | Reset the DB with `docker compose down -v` and restart |

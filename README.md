@@ -26,6 +26,13 @@ Current games:
 - `games/speed_typing/*`: Speed Typing Challenge API router, schemas, service
 - `models.py`: Shared SQLAlchemy models for all games
 
+## Secrets
+This project uses a `.env` file in the root directory to manage secrets. Create a `.env` file by copying the example:
+```powershell
+cp .env.example .env
+```
+You will need to provide a `GITHUB_TOKEN` for the AI analysis feature (GitHub Models endpoint).
+
 ## How to Run
 
 ### With Docker (recommended)
@@ -52,17 +59,15 @@ npm install
 npm run dev   # http://localhost:3000
 ```
 
-## Secrets / GitHub Copilot
+## Environment Variables
 
 - Copy `.env.example` to `.env` in the project root and set your GitHub token. Example:
 
 ```
-GITHUB_TOKEN=ghp_REPLACE_WITH_YOUR_TOKEN
+GITHUB_TOKEN=ghp-REPLACE_WITH_YOUR_TOKEN
 ```
 
-- A GitHub account with an active **Copilot subscription** is required for the AI analysis feature.
-
-- `.env` is ignored by git (see `.gitignore`). Commit only `.env.example` (it contains a placeholder and instructions) so collaborators know which variables to provide.
+- `.env` is ignored by git (see `.gitignore`). Commit only `.env.example` so collaborators know which variables to provide.
 
 - When running with Docker Compose the `.env` file is automatically loaded by `docker compose up`.
 
