@@ -16,6 +16,15 @@ export default function CoOpGamePage() {
   const [analysisError, setAnalysisError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!showButtons) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [showButtons])
+
+  useEffect(() => {
     if (!p1Name || !p2Name) {
       navigate('/games/co-op-challenge')
     }
@@ -91,46 +100,72 @@ export default function CoOpGamePage() {
       />
 
       {showButtons && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginTop: 8, maxWidth: 640, width: '100%' }}>
-          <p style={{ color: '#f0c040', fontSize: 20, margin: 0 }}>
-            完成時間: {(durationMs / 1000).toFixed(2)} 秒
-          </p>
-
-          {/* AI 分析結果區塊 */}
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(6, 12, 24, 0.72)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: 16,
+          }}
+        >
           <div
             style={{
-              background: 'rgba(0, 20, 60, 0.6)',
-              border: '1px solid rgba(240, 192, 64, 0.4)',
-              borderRadius: 8,
-              padding: '16px 20px',
-              width: '100%',
-              minHeight: 80,
+              width: 'min(92vw, 760px)',
+              maxHeight: 'min(86vh, 760px)',
+              overflowY: 'auto',
+              background: 'linear-gradient(180deg, rgba(12, 26, 58, 0.96) 0%, rgba(8, 16, 38, 0.96) 100%)',
+              border: '1px solid rgba(240, 192, 64, 0.45)',
+              borderRadius: 12,
+              boxShadow: '0 20px 48px rgba(0, 0, 0, 0.42)',
+              padding: '20px 22px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 14,
             }}
           >
-            <h3 style={{ color: '#f0c040', margin: '0 0 8px 0', fontSize: 16 }}>🤖 AI 合作分析</h3>
-            {analysisLoading && <p style={{ color: '#a9bfd7', margin: 0 }}>分析中，請稍候...</p>}
-            {analysisError && <p style={{ color: '#f55', margin: 0 }}>{analysisError}</p>}
-            {analysis && (
-              <p style={{ color: '#e0e8f0', margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{analysis}</p>
-            )}
-          </div>
+            <p style={{ color: '#f0c040', fontSize: 20, margin: 0, fontWeight: 700 }}>
+              完成時間: {(durationMs / 1000).toFixed(2)} 秒
+            </p>
 
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button
-              style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
-              onClick={() => {
-                setShowButtons(false)
-                setAnalysis(null)
-                setAnalysisError(null)
-                setDurationMs(0)
-                document.dispatchEvent(new Event('game-reset'))
+            <div
+              style={{
+                background: 'rgba(0, 20, 60, 0.6)',
+                border: '1px solid rgba(240, 192, 64, 0.4)',
+                borderRadius: 8,
+                padding: '16px 20px',
+                width: '100%',
+                minHeight: 90,
               }}
             >
-              再玩一次
-            </button>
-            <button style={{ background: '#24334f', color: '#fff' }} onClick={() => navigate('/')}>
-              回到首頁
-            </button>
+              <h3 style={{ color: '#f0c040', margin: '0 0 8px 0', fontSize: 16 }}>🤖 AI 合作分析</h3>
+              {analysisLoading && <p style={{ color: '#a9bfd7', margin: 0 }}>分析中，請稍候...</p>}
+              {analysisError && <p style={{ color: '#f55', margin: 0 }}>{analysisError}</p>}
+              {analysis && (
+                <p style={{ color: '#e0e8f0', margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{analysis}</p>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
+                onClick={() => {
+                  setShowButtons(false)
+                  setAnalysis(null)
+                  setAnalysisError(null)
+                  setDurationMs(0)
+                  document.dispatchEvent(new Event('game-reset'))
+                }}
+              >
+                再玩一次
+              </button>
+              <button style={{ background: '#24334f', color: '#fff' }} onClick={() => navigate('/')}>
+                回到首頁
+              </button>
+            </div>
           </div>
         </div>
       )}
