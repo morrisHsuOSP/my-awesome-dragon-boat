@@ -9,6 +9,11 @@ export async function getSpeedTypingStatus() {
   return res.data as { title: string; status: string; message: string }
 }
 
+export async function getSpeedTypingQuotes() {
+  const res = await API.get('/api/speed-typing/quotes')
+  return res.data as { id: string; author: string; en: string }[]
+}
+
 export async function submitSpeedTypingScore(playerName: string, wpm: number, accuracy: number) {
   const res = await API.post('/api/speed-typing/scores', {
     player_name: playerName,

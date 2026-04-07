@@ -42,3 +42,13 @@ class TypingScore(Base):
     wpm = Column(Integer, nullable=False)
     accuracy = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class VerticalGameScore(Base):
+    __tablename__ = "vertical_game_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    player_name = Column(String, nullable=False, index=True)
+    score = Column(Integer, nullable=False)
+    survival_time_ms = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -1,8 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+import httpx
 
 from database import SessionLocal
 from .schemas import TypingScoreSubmit
 from . import service
+
+QUOTES_API_URL = "https://zenquotes.io/api/quotes"
 
 router = APIRouter(prefix="/api/speed-typing", tags=["speed-typing"])
 
@@ -14,6 +17,24 @@ def status():
         "status": "scaffold-ready",
         "message": "Core backend scaffolding is ready for gameplay logic.",
     }
+
+
+@router.get("/quotes")
+async def get_quotes():
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        response = await client.get(QUOTES_API_URL)
+        response.raise_for_status()
+        data = response.json()
+        if not isinstance(data, list) or len(data) == 0:
+            raise HTTPException(status_code=502, detail="No quotes returned from API")
+        quotes = [
+            {"id": str(i), "author": item["a"], "en": item["q"].strip()}
+            for i, item in enumerate(data)
+            if item.get("q") and item.get("a")
+        ]
+        if not quotes:
+            raise HTTPException(status_code=502, detail="No valid quotes from API")
+        return quotes
 
 
 @router.post("/scores")

@@ -75,6 +75,24 @@ export default function HomePage() {
             2-player co-op mode. Work together to complete the challenge.
           </p>
         </button>
+
+        <button
+          onClick={() => navigate('/games/vertical-game')}
+          style={{
+            minHeight: 220,
+            textAlign: 'left',
+            padding: 24,
+            borderRadius: 14,
+            background: 'linear-gradient(140deg, #2a4a6a 0%, #1a5f5f 45%, #104848 100%)',
+            color: '#fff',
+            border: '1px solid #3d9b9b',
+          }}
+        >
+          <h2 style={{ marginBottom: 10 }}>Vertical Game</h2>
+          <p style={{ color: '#d7f5f0', lineHeight: 1.55, fontWeight: 500 }}>
+            Steer your boat down the river and dodge obstacles. The river gets faster — how long can you survive?
+          </p>
+        </button>
       </div>
     </div>
   )
