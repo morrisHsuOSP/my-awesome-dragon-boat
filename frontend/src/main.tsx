@@ -5,8 +5,13 @@ import HomePage from './pages/HomePage'
 import DragonBoatHomePage from './games/dragonBoat/pages/DragonBoatHomePage'
 import DragonBoatGamePage from './games/dragonBoat/pages/DragonBoatGamePage'
 import DragonBoatLeaderboardPage from './games/dragonBoat/pages/DragonBoatLeaderboardPage'
+import SpeedTypingHomePage from './games/speedTyping/pages/SpeedTypingHomePage'
 import SpeedTypingPage from './games/speedTyping/pages/SpeedTypingPage'
+import SpeedTypingLeaderboardPage from './games/speedTyping/pages/SpeedTypingLeaderboardPage'
 import CoOpChallengePage from './games/coOpChallenge/pages/CoOpChallengePage'
+import VerticalGameHomePage from './games/verticalGame/pages/VerticalGameHomePage'
+import VerticalGamePage from './games/verticalGame/pages/VerticalGamePage'
+import VerticalGameLeaderboardPage from './games/verticalGame/pages/VerticalGameLeaderboardPage'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,8 +22,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/games/dragon-boat" element={<DragonBoatHomePage />} />
         <Route path="/games/dragon-boat/play" element={<DragonBoatGamePage />} />
         <Route path="/games/dragon-boat/leaderboard" element={<DragonBoatLeaderboardPage />} />
-        <Route path="/games/speed-typing" element={<SpeedTypingPage />} />
+        <Route path="/games/speed-typing" element={<SpeedTypingHomePage />} />
+        <Route path="/games/speed-typing/play" element={<SpeedTypingPage />} />
+        <Route path="/games/speed-typing/leaderboard" element={<SpeedTypingLeaderboardPage />} />
         <Route path="/games/co-op-challenge" element={<CoOpChallengePage />} />
+        <Route path="/games/vertical-game" element={<VerticalGameHomePage />} />
+        <Route path="/games/vertical-game/play" element={<VerticalGamePage />} />
+        <Route path="/games/vertical-game/leaderboard" element={<VerticalGameLeaderboardPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
