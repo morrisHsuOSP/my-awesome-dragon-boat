@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
+from sqlalchemy.dialects.postgresql import ARRAY, FLOAT
 from sqlalchemy.sql import func
 from database import Base
 
@@ -17,6 +18,19 @@ class Score(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     duration_ms = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CoOpResult(Base):
+    __tablename__ = "co_op_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    p1_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    p2_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    duration_ms = Column(Integer, nullable=False)
+    p1_timestamps = Column(ARRAY(FLOAT), nullable=False)
+    p2_timestamps = Column(ARRAY(FLOAT), nullable=False)
+    ai_analysis = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
