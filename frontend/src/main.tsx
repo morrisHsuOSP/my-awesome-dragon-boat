@@ -12,6 +12,9 @@ import CoOpChallengePage from './games/coOpChallenge/pages/CoOpChallengePage'
 import VerticalGameHomePage from './games/verticalGame/pages/VerticalGameHomePage'
 import VerticalGamePage from './games/verticalGame/pages/VerticalGamePage'
 import VerticalGameLeaderboardPage from './games/verticalGame/pages/VerticalGameLeaderboardPage'
+import PaddleRaceHomePage from './games/paddleRace/pages/PaddleRaceHomePage'
+import PaddleRacePage from './games/paddleRace/pages/PaddleRacePage'
+import PaddleRaceLeaderboardPage from './games/paddleRace/pages/PaddleRaceLeaderboardPage'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -29,6 +32,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/games/vertical-game" element={<VerticalGameHomePage />} />
         <Route path="/games/vertical-game/play" element={<VerticalGamePage />} />
         <Route path="/games/vertical-game/leaderboard" element={<VerticalGameLeaderboardPage />} />
+        <Route path="/games/paddle-race" element={<PaddleRaceHomePage />} />
+        <Route path="/games/paddle-race/play" element={<PaddleRacePage />} />
+        <Route path="/games/paddle-race/leaderboard" element={<PaddleRaceLeaderboardPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

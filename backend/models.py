@@ -38,3 +38,12 @@ class VerticalGameScore(Base):
     score = Column(Integer, nullable=False)
     survival_time_ms = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PaddleRaceScore(Base):
+    __tablename__ = "paddle_race_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    winner_name = Column(String, nullable=False, index=True)
+    race_time_ms = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
