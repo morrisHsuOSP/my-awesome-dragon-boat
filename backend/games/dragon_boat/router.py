@@ -1,10 +1,14 @@
 from fastapi import APIRouter, HTTPException
+import logging
 
 from database import SessionLocal
 from .schemas import UserCreate, ScoreSubmit
 from . import service
+from .challenge_wall_service import DragonBoatChallengeWallService
 
 router = APIRouter(prefix="/api/dragon-boat", tags=["dragon-boat"])
+logger = logging.getLogger(__name__)
+challenge_wall_service = DragonBoatChallengeWallService()
 
 
 @router.post("/users")
@@ -30,6 +34,13 @@ def submit_score(payload: ScoreSubmit):
             raise HTTPException(status_code=404, detail="User not found")
 
         score = service.create_score(db, user.id, payload.duration_ms)
+
+        # Wall updates are best-effort and should not block score submission.
+        try:
+            challenge_wall_service.process_new_score(db, challenger_user_id=user.id)
+        except Exception as exc:  # pragma: no cover
+            logger.exception("dragon_boat_challenge_wall_pipeline_failed error=%s", exc)
+
         return {
             "id": score.id,
             "user_name": payload.user_name,
@@ -48,5 +59,15 @@ def get_leaderboard():
             {"rank": i + 1, "user_name": r.name, "duration_ms": r.duration_ms}
             for i, r in enumerate(results)
         ]
+    finally:
+        db.close()
+
+
+@router.get("/challenge-feed")
+def get_challenge_feed(limit: int = 5):
+    db = SessionLocal()
+    try:
+        safe_limit = max(1, min(limit, 5))
+        return challenge_wall_service.get_wall_feed(db, limit=safe_limit)
     finally:
         db.close()

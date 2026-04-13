@@ -38,10 +38,20 @@
     var winDuration = 0;
     var raceStartTime = 0;
     var raceStarted = false;
+    var countdownSeconds = 5;
+    var countdownEndTime = Date.now() + countdownSeconds * 1000;
 
     // Read player names from React (set on window before script loads)
     var p1Name = window.__P1_NAME || "Player 1";
     var p2Name = window.__P2_NAME || "Player 2";
+    var p1User = window.__P1_USER || p1Name;
+    var p2User = window.__P2_USER || p2Name;
+    var EVENTS = window.__DRAGON_BOAT_EVENTS || {
+        RACE_START: "race-start",
+        GAME_OVER: "game-over",
+        GAME_RESET: "game-reset",
+        RACE_RESET: "race-reset",
+    };
 
     // --- Load boat images ---
     var useImage = false;
@@ -210,6 +220,50 @@
         ctx.strokeRect(lineX, 0, cellSize * 2, SCREEN_HEIGHT);
     }
 
+    function drawFinishSprintZone() {
+        var zoneWidth = Math.floor(SCREEN_WIDTH * 0.1);
+        var zoneX = FINISH_X - zoneWidth + 110;
+        var pulse = 0.12 + ((Math.sin(frameCounter * 0.12) + 1) * 0.08);
+
+        ctx.save();
+        var grad = ctx.createLinearGradient(zoneX, 0, zoneX + zoneWidth, 0);
+        grad.addColorStop(0, "rgba(255, 205, 90, 0)");
+        grad.addColorStop(0.5, "rgba(255, 205, 90, " + pulse + ")");
+        grad.addColorStop(1, "rgba(255, 205, 90, 0.28)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(zoneX, 0, zoneWidth, SCREEN_HEIGHT);
+
+        ctx.strokeStyle = "rgba(255, 225, 140, 0.36)";
+        ctx.setLineDash([10, 8]);
+        ctx.lineWidth = 2;
+        ctx.strokeRect(zoneX, 8, zoneWidth, SCREEN_HEIGHT - 16);
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "rgba(255, 245, 200, 0.9)";
+        ctx.font = "bold 14px 'Microsoft YaHei', 'PingFang TC', sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("SPRINT ZONE", zoneX + zoneWidth / 2, 24);
+        ctx.restore();
+    }
+
+    function drawBoatNameTag(boatX, boatY, name, fillColor, strokeColor) {
+        var textX = Math.min(SCREEN_WIDTH - 14, Math.max(14, boatX + SHIP_WIDTH * 0.5));
+        var textY = boatY - 18;
+
+        ctx.save();
+        ctx.font = "bold 16px 'Microsoft YaHei', 'PingFang TC', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+        ctx.shadowBlur = 6;
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = strokeColor;
+        ctx.strokeText(name, textX, textY);
+        ctx.fillStyle = fillColor;
+        ctx.fillText(name, textX, textY);
+        ctx.restore();
+    }
+
     // --- Win screen (enhanced) ---
     function drawWinScreen() {
         // Radial gradient overlay
@@ -242,7 +296,7 @@
 
     // --- HUD panel ---
     function drawHUD() {
-        // 半透明背景面板
+        // semi-transparent control panel (left)
         ctx.save();
         ctx.fillStyle = "rgba(0, 20, 60, 0.5)";
         ctx.beginPath();
@@ -265,15 +319,54 @@
         ctx.restore();
     }
 
+    function drawRaceAtmosphere() {
+        // top race ribbon
+        ctx.save();
+        var glow = (Math.sin(frameCounter * 0.08) + 1) * 0.15 + 0.2;
+        ctx.fillStyle = "rgba(255, 205, 90, " + glow + ")";
+        ctx.fillRect(0, 0, SCREEN_WIDTH, 6);
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.16)";
+        for (var i = 0; i < 7; i++) {
+            var lx = ((frameCounter * 4 + i * 185) % (SCREEN_WIDTH + 120)) - 120;
+            ctx.fillRect(lx, 8, 70, 2);
+        }
+
+        // cheering sparkles near side edges
+        for (var c = 0; c < 24; c++) {
+            var side = c % 2 === 0 ? 16 : SCREEN_WIDTH - 16;
+            var cy = ((c * 31 + frameCounter * 2.1) % SCREEN_HEIGHT);
+            var rad = 1.3 + (c % 3);
+            var alpha = 0.08 + ((Math.sin(frameCounter * 0.05 + c) + 1) * 0.08);
+            ctx.fillStyle = "rgba(255, 250, 200, " + alpha + ")";
+            ctx.beginPath();
+            ctx.arc(side, cy, rad, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    function drawCountdownOverlay(secondsLeft) {
+        ctx.save();
+        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+        ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 56px 'Microsoft YaHei', 'PingFang TC', sans-serif";
+        ctx.fillText(String(secondsLeft), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 22);
+
+        ctx.font = "24px 'Microsoft YaHei', 'PingFang TC', sans-serif";
+        ctx.fillStyle = "rgba(240, 240, 240, 0.95)";
+        ctx.fillText("Race starts in", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 34);
+        ctx.restore();
+    }
+
     // --- Keyboard events ---
     function onKey(e) {
         if (gameOver) return;
-
-        // Start timer on first key press
-        if (!raceStarted) {
-            raceStarted = true;
-            raceStartTime = Date.now();
-        }
+        if (!raceStarted) return;
 
         // Player 1 (arrow keys)
         if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
@@ -310,15 +403,17 @@
         winDuration = 0;
         raceStarted = false;
         raceStartTime = 0;
+        countdownEndTime = Date.now() + countdownSeconds * 1000;
+        document.dispatchEvent(new CustomEvent(EVENTS.RACE_RESET));
     }
-    document.addEventListener("game-reset", onGameReset);
+    document.addEventListener(EVENTS.GAME_RESET, onGameReset);
 
     // --- 遊戲主迴圈 ---
     function gameLoop() {
         // Stop loop and clean up when canvas is removed by React
         if (!document.getElementById("gameCanvas")) {
             document.removeEventListener("keydown", onKey);
-            document.removeEventListener("game-reset", onGameReset);
+            document.removeEventListener(EVENTS.GAME_RESET, onGameReset);
             return;
         }
 
@@ -326,9 +421,11 @@
 
         // 繪製動態水面
         drawDynamicRiver(frameCounter);
+        drawRaceAtmosphere();
 
         // 終點線
         drawFinishLine();
+        drawFinishSprintZone();
 
         // 船的浮動效果
         var floatEffect = Math.sin(frameCounter * 0.1) * 3;
@@ -340,27 +437,40 @@
         // 繪製兩艘船
         drawBoat(p1X, p1Y, "rgb(139, 69, 19)", floatEffect, ship1Img);
         drawBoat(p2X, p2Y, "rgb(180, 60, 60)", floatEffect, ship2Canvas);
+        drawBoatNameTag(p1X, p1Y, p1Name, "rgba(185, 232, 255, 0.98)", "rgba(8, 38, 74, 0.98)");
+        drawBoatNameTag(p2X, p2Y, p2Name, "rgba(255, 220, 220, 0.98)", "rgba(74, 12, 12, 0.98)");
 
-        // 操作提示
+        // control hints on track
         drawHUD();
 
+        if (!raceStarted) {
+            var secondsLeft = Math.max(0, Math.ceil((countdownEndTime - Date.now()) / 1000));
+            if (secondsLeft <= 0) {
+                raceStarted = true;
+                raceStartTime = Date.now();
+                document.dispatchEvent(new CustomEvent(EVENTS.RACE_START, { detail: { start_time: raceStartTime } }));
+            } else {
+                drawCountdownOverlay(secondsLeft);
+            }
+        }
+
         // Check winner
-        if (!gameOver) {
+        if (!gameOver && raceStarted) {
             if (p1X >= FINISH_X && p2X >= FINISH_X) {
                 winnerText = "It's a tie!";
                 winDuration = (Date.now() - raceStartTime) / 1000;
                 gameOver = true;
-                document.dispatchEvent(new CustomEvent("game-over", { detail: { winner: "", duration_ms: Math.round(winDuration * 1000) } }));
+                document.dispatchEvent(new CustomEvent(EVENTS.GAME_OVER, { detail: { winner: "", duration_ms: Math.round(winDuration * 1000) } }));
             } else if (p1X >= FINISH_X) {
                 winnerText = p1Name + " wins!";
                 winDuration = (Date.now() - raceStartTime) / 1000;
                 gameOver = true;
-                document.dispatchEvent(new CustomEvent("game-over", { detail: { winner: p1Name, duration_ms: Math.round(winDuration * 1000) } }));
+                document.dispatchEvent(new CustomEvent(EVENTS.GAME_OVER, { detail: { winner: p1User, duration_ms: Math.round(winDuration * 1000) } }));
             } else if (p2X >= FINISH_X) {
                 winnerText = p2Name + " wins!";
                 winDuration = (Date.now() - raceStartTime) / 1000;
                 gameOver = true;
-                document.dispatchEvent(new CustomEvent("game-over", { detail: { winner: p2Name, duration_ms: Math.round(winDuration * 1000) } }));
+                document.dispatchEvent(new CustomEvent(EVENTS.GAME_OVER, { detail: { winner: p2User, duration_ms: Math.round(winDuration * 1000) } }));
             }
         }
 
