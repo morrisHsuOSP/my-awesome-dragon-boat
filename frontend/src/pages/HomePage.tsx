@@ -236,14 +236,22 @@ export default function HomePage() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(200px, 280px))',
+          gridTemplateColumns: 'repeat(6, 1fr)',
           gap: 20,
           justifyContent: 'center',
           width: '100%',
           maxWidth: 920,
         }}
       >
-        {games.map((game) => (
+        {games.map((game, index) => {
+          const gridColumnMap = [
+            '1 / 3',  // Dragon Boat Race
+            '3 / 5',  // Speed Typing
+            '5 / 7',  // Co-op Challenge
+            '2 / 4',  // River Rush (centered between col 1-2 and 3-4)
+            '4 / 6',  // Paddle Race (centered between col 3-4 and 5-6)
+          ]
+          return (
           <div
             key={game.route}
             onClick={() => navigate(game.route)}
@@ -251,6 +259,7 @@ export default function HomePage() {
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === 'Enter') navigate(game.route) }}
             style={{
+              gridColumn: gridColumnMap[index],
               position: 'relative',
               display: 'flex',
               flexDirection: 'column',
@@ -333,7 +342,8 @@ export default function HomePage() {
               {game.buttonLabel}
             </button>
           </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

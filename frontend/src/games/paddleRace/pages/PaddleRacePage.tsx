@@ -708,9 +708,13 @@ export default function PaddleRacePage() {
           return s.age < 18
         })
 
-        // Camera: follow single boat
-        const targetCamY = g.boat.distance - CANVAS_H * 0.65
-        g.cameraY += (targetCamY - g.cameraY) * 0.07
+        // Camera: follow single boat, centered on screen after start
+        const targetCamY = g.boat.distance - CANVAS_H * 0.5
+        if (g.boat.distance > CANVAS_H * 0.5) {
+          g.cameraY += (targetCamY - g.cameraY) * 0.15
+        } else {
+          g.cameraY += (targetCamY - g.cameraY) * 0.07
+        }
         if (g.cameraY < -50) g.cameraY = -50
 
         g.scrollOffset = g.cameraY * 0.01
