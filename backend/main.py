@@ -6,6 +6,7 @@ from games.dragon_boat.router import router as dragon_boat_router
 from games.speed_typing.router import router as speed_typing_router
 from games.vertical_game.router import router as vertical_game_router
 from games.paddle_race.router import router as paddle_race_router
+from games.co_op_challenge.router import router as co_op_challenge_router
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -23,6 +24,7 @@ app.include_router(dragon_boat_router)
 app.include_router(speed_typing_router)
 app.include_router(vertical_game_router)
 app.include_router(paddle_race_router)
+app.include_router(co_op_challenge_router)
 
 @app.get("/health")
 def health():

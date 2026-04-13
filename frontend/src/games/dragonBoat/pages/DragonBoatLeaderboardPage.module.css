@@ -1,0 +1,136 @@
+.wallGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 4px 2px;
+}
+
+/* ── Base bubble ── */
+.bubble {
+  position: relative;
+  padding: 12px 16px 12px 16px;
+  border-radius: 20px;
+  border: 2.5px solid;
+  margin-bottom: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.bubbleLeft {
+  margin-left: 18px;
+  margin-right: 0;
+}
+
+.bubbleRight {
+  margin-right: 18px;
+  margin-left: 0;
+}
+
+/* Triangle tails */
+.bubbleLeft::after,
+.bubbleRight::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.bubbleLeft::after {
+  left: -14px;
+  border-width: 8px 14px 8px 0;
+  border-color: transparent var(--tail-color) transparent transparent;
+}
+
+.bubbleRight::after {
+  right: -14px;
+  border-width: 8px 0 8px 14px;
+  border-color: transparent transparent transparent var(--tail-color);
+}
+
+/* ── Tone variants ── */
+.toneHeated {
+  --tail-color: #ff6b35;
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.09);
+}
+
+.toneTense {
+  --tail-color: #f0c040;
+  border-color: #f0c040;
+  background: rgba(240, 192, 64, 0.08);
+}
+
+.toneCompetitive {
+  --tail-color: #3dd6c2;
+  border-color: #3dd6c2;
+  background: rgba(61, 214, 194, 0.07);
+}
+
+.toneMomentum {
+  --tail-color: #8cc4ff;
+  border-color: #4f8ecf;
+  background: rgba(140, 196, 255, 0.07);
+}
+
+/* ── Inner text ── */
+.bubbleHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.scenario {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.headline {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #dce8f8;
+}
+
+.meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #6a8ab0;
+  letter-spacing: 0.01em;
+}
+
+/* ── Priority badge ── */
+.priority {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.priorityHigh {
+  background: rgba(255, 107, 53, 0.22);
+  color: #ff8c5a;
+  border: 1px solid #ff6b35;
+}
+
+.priorityMedium {
+  background: rgba(140, 196, 255, 0.15);
+  color: #8cc4ff;
+  border: 1px solid #4f8ecf;
+}

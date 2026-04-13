@@ -1,0 +1,104 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 0%, #253f72 0%, #1a1a2e 40%, #111827 100%);
+  gap: 16px;
+  padding: 20px 12px 24px;
+}
+
+.title {
+  margin: 0;
+  color: #ffd166;
+  letter-spacing: 0.6px;
+  font-size: 42px;
+  text-align: center;
+}
+
+.topBar {
+  width: 980px;
+  max-width: 96vw;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.timerCard {
+  min-width: 170px;
+  border-radius: 10px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 218, 120, 0.55);
+  background: rgba(9, 25, 52, 0.72);
+  color: #ffe9a0;
+  font-weight: 700;
+  text-align: right;
+  box-shadow: 0 0 18px rgba(255, 203, 77, 0.2);
+}
+
+.timerHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #ff4d4f;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  animation: liveBlink 1.2s ease-in-out infinite;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff4d4f;
+  box-shadow: 0 0 8px rgba(255, 77, 79, 0.8);
+}
+
+.phaseLabel {
+  font-size: 12px;
+  color: #9fd8ff;
+}
+
+.timeValue {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.canvas {
+  border: 2px solid #2a4f88;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(50, 145, 255, 0.34);
+  max-width: 96vw;
+  height: auto;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@keyframes liveBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

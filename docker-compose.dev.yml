@@ -1,0 +1,8 @@
+# Development overrides — use with:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up db
+# This starts ONLY the database with port 5432 exposed to the host.
+
+services:
+  db:
+    ports:
+      - "5432:5432"

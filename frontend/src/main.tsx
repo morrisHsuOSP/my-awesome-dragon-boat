@@ -9,6 +9,7 @@ import SpeedTypingHomePage from './games/speedTyping/pages/SpeedTypingHomePage'
 import SpeedTypingPage from './games/speedTyping/pages/SpeedTypingPage'
 import SpeedTypingLeaderboardPage from './games/speedTyping/pages/SpeedTypingLeaderboardPage'
 import CoOpChallengePage from './games/coOpChallenge/pages/CoOpChallengePage'
+import CoOpGamePage from './games/coOpChallenge/pages/CoOpGamePage'
 import VerticalGameHomePage from './games/verticalGame/pages/VerticalGameHomePage'
 import VerticalGamePage from './games/verticalGame/pages/VerticalGamePage'
 import VerticalGameLeaderboardPage from './games/verticalGame/pages/VerticalGameLeaderboardPage'
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/games/speed-typing/play" element={<SpeedTypingPage />} />
         <Route path="/games/speed-typing/leaderboard" element={<SpeedTypingLeaderboardPage />} />
         <Route path="/games/co-op-challenge" element={<CoOpChallengePage />} />
+        <Route path="/games/co-op-challenge/play" element={<CoOpGamePage />} />
         <Route path="/games/vertical-game" element={<VerticalGameHomePage />} />
         <Route path="/games/vertical-game/play" element={<VerticalGamePage />} />
         <Route path="/games/vertical-game/leaderboard" element={<VerticalGameLeaderboardPage />} />
