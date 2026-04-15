@@ -8,8 +8,8 @@ const CANVAS_H = 700
 const BOAT_W = 44
 const BOAT_H = 100
 
-// River width: ~3.75 boat widths
-const RIVER_W = 170
+// River width: ~5 boat widths
+const RIVER_W = 220
 const LANE_LEFT = (CANVAS_W - RIVER_W) / 2
 const LANE_RIGHT = LANE_LEFT + RIVER_W
 const LANE_CX = CANVAS_W / 2
@@ -32,7 +32,7 @@ const OBS_SPACING = 350
 const OBS_W_MIN = 25
 const OBS_W_MAX = 55
 const OBS_H = 18
-const CURRENT_FORCE = 0.5
+const CURRENT_FORCE = 0.3
 const CURRENT_ZONE_LEN = 500
 const CURRENT_ZONE_GAP = 500
 
@@ -951,10 +951,12 @@ export default function PaddleRacePage() {
   return (
     <div
       style={{
-        minHeight: '100vh',
-        padding: '24px 16px',
+        height: '100vh',
+        padding: '16px 16px',
         display: 'flex',
         justifyContent: 'center',
+        boxSizing: 'border-box',
+        overflow: 'auto',
       }}
     >
       <div
@@ -979,6 +981,7 @@ export default function PaddleRacePage() {
             borderRadius: 6,
             boxShadow: '0 0 24px rgba(255,183,197,0.3)',
             maxWidth: '96vw',
+            maxHeight: 'calc(100vh - 120px)',
             height: 'auto',
           }}
         />
@@ -986,46 +989,58 @@ export default function PaddleRacePage() {
         {phase === 'finished' && (
           <div
             style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(6, 12, 24, 0.72)',
               display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
               alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: 16,
             }}
           >
-            <h2 style={{ color: '#f0c040' }}>🌸 Race Complete!</h2>
-            <p>
-              Time: <strong>{timeSec}s</strong>
-            </p>
             <div
               style={{
+                width: 'min(92vw, 480px)',
+                background: 'linear-gradient(180deg, rgba(12, 26, 58, 0.96) 0%, rgba(8, 16, 38, 0.96) 100%)',
+                border: '1px solid rgba(240, 192, 64, 0.45)',
+                borderRadius: 12,
+                boxShadow: '0 20px 48px rgba(0, 0, 0, 0.42)',
+                padding: '20px 22px',
                 display: 'flex',
-                gap: 10,
-                flexWrap: 'wrap',
-                justifyContent: 'center',
+                flexDirection: 'column',
+                gap: 14,
+                alignItems: 'center',
               }}
             >
-              <button
-                onClick={resetGame}
-                style={{
-                  background: '#f0c040',
-                  color: '#000',
-                  fontWeight: 'bold',
-                }}
-              >
-                Race Again
-              </button>
-              <button
-                style={{ background: '#1a3a6a', color: '#fff' }}
-                onClick={() => navigate('/games/paddle-race/leaderboard')}
-              >
-                Leaderboard
-              </button>
-              <button
-                onClick={() => navigate('/')}
-                style={{ background: '#24334f', color: '#fff' }}
-              >
-                Back To Game Hub
-              </button>
+              <h2 style={{ color: '#f0c040', margin: 0 }}>🌸 Race Complete!</h2>
+              <p style={{ color: '#e0e8f0', margin: 0, fontSize: 18 }}>
+                Time: <strong>{timeSec}s</strong>
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button
+                  onClick={resetGame}
+                  style={{
+                    background: '#f0c040',
+                    color: '#000',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Race Again
+                </button>
+                <button
+                  style={{ background: '#1a3a6a', color: '#fff' }}
+                  onClick={() => navigate('/games/paddle-race/leaderboard')}
+                >
+                  Leaderboard
+                </button>
+                <button
+                  onClick={() => navigate('/')}
+                  style={{ background: '#24334f', color: '#fff' }}
+                >
+                  Back To Game Hub
+                </button>
+              </div>
             </div>
           </div>
         )}

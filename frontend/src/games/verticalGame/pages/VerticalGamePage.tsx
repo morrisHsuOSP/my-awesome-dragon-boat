@@ -573,7 +573,7 @@ export default function VerticalGamePage() {
   const survivalSec = (finalTime / 1000).toFixed(2)
 
   return (
-    <div style={{ minHeight: '100vh', padding: '24px 16px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ height: '100vh', padding: '16px 16px', display: 'flex', justifyContent: 'center', boxSizing: 'border-box', overflow: 'auto' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center', maxWidth: 600 }}>
         <h1 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)' }}>🚣 {playerName}'s River Run</h1>
 
@@ -586,29 +586,56 @@ export default function VerticalGamePage() {
             borderRadius: 6,
             boxShadow: '0 0 24px rgba(0,100,255,0.3)',
             maxWidth: '96vw',
+            maxHeight: 'calc(100vh - 120px)',
             height: 'auto',
           }}
         />
 
         {phase === 'gameover' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
-            <h2 style={{ color: '#ffa040' }}>💥 Crashed!</h2>
-            <p>
-              Score: <strong>{finalScore}</strong> — Survived: <strong>{survivalSec}s</strong>
-            </p>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button onClick={startGame} style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}>
-                Play Again
-              </button>
-              <button
-                style={{ background: '#1a3a6a', color: '#fff' }}
-                onClick={() => navigate('/games/vertical-game/leaderboard')}
-              >
-                Leaderboard
-              </button>
-              <button onClick={() => navigate('/')} style={{ background: '#24334f', color: '#fff' }}>
-                Back To Game Hub
-              </button>
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(6, 12, 24, 0.72)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: 16,
+            }}
+          >
+            <div
+              style={{
+                width: 'min(92vw, 480px)',
+                background: 'linear-gradient(180deg, rgba(12, 26, 58, 0.96) 0%, rgba(8, 16, 38, 0.96) 100%)',
+                border: '1px solid rgba(240, 192, 64, 0.45)',
+                borderRadius: 12,
+                boxShadow: '0 20px 48px rgba(0, 0, 0, 0.42)',
+                padding: '20px 22px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 14,
+                alignItems: 'center',
+              }}
+            >
+              <h2 style={{ color: '#ffa040', margin: 0 }}>💥 Crashed!</h2>
+              <p style={{ color: '#e0e8f0', margin: 0, fontSize: 18 }}>
+                Score: <strong>{finalScore}</strong> — Survived: <strong>{survivalSec}s</strong>
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button onClick={startGame} style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}>
+                  Play Again
+                </button>
+                <button
+                  style={{ background: '#1a3a6a', color: '#fff' }}
+                  onClick={() => navigate('/games/vertical-game/leaderboard')}
+                >
+                  Leaderboard
+                </button>
+                <button onClick={() => navigate('/')} style={{ background: '#24334f', color: '#fff' }}>
+                  Back To Game Hub
+                </button>
+              </div>
             </div>
           </div>
         )}

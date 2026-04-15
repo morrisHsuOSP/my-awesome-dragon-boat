@@ -217,18 +217,20 @@ export default function HomePage() {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        height: '100vh',
+        boxSizing: 'border-box',
+        overflow: 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '40px 20px 0',
+        padding: '24px 20px 0',
         background: 'radial-gradient(circle at 10% 20%, rgba(43, 89, 163, 0.35), transparent 45%), radial-gradient(circle at 85% 80%, rgba(28, 59, 111, 0.35), transparent 42%), #0a1628',
       }}
     >
       <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', letterSpacing: 1.2, marginBottom: 8, color: '#fff' }}>
         Your Game Awaits
       </h1>
-      <p style={{ color: '#a9bfd7', marginBottom: 36, textAlign: 'center' }}>
+      <p style={{ color: '#a9bfd7', marginBottom: 20, textAlign: 'center' }}>
         Pick a challenge and jump right in.
       </p>
 
@@ -237,7 +239,7 @@ export default function HomePage() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: 20,
+          gap: 16,
           justifyContent: 'center',
           width: '100%',
           maxWidth: 920,
@@ -264,14 +266,14 @@ export default function HomePage() {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '20px 18px 16px',
+              padding: '14px 16px 12px',
               borderRadius: 14,
               background: game.bg,
               border: `1.5px solid ${game.border}`,
               color: '#fff',
               cursor: 'pointer',
               overflow: 'hidden',
-              minHeight: 280,
+              minHeight: 210,
               transition: 'transform 0.15s, box-shadow 0.15s',
             }}
             onMouseEnter={(e) => {
@@ -324,8 +326,8 @@ export default function HomePage() {
               onClick={(e) => { e.stopPropagation(); navigate(game.route) }}
               style={{
                 alignSelf: 'flex-start',
-                marginTop: 14,
-                padding: '10px 28px',
+                marginTop: 8,
+                padding: '8px 24px',
                 borderRadius: 8,
                 background: game.buttonBg,
                 color: '#fff',

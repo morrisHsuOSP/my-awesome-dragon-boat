@@ -80,7 +80,9 @@ export default function CoOpGamePage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        height: '100vh',
+        boxSizing: 'border-box',
+        overflow: 'auto',
         background: '#1a1a2e',
         gap: 16,
       }}
@@ -95,6 +97,7 @@ export default function CoOpGamePage() {
           borderRadius: '4px',
           boxShadow: '0 0 20px rgba(0, 100, 255, 0.3)',
           maxWidth: '96vw',
+          maxHeight: 'calc(100vh - 120px)',
           height: 'auto',
         }}
       />

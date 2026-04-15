@@ -53,7 +53,7 @@ export default function DragonBoatHomePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh', gap: 24, paddingTop: 48 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', height: '100vh', boxSizing: 'border-box', overflow: 'auto', gap: 24, paddingTop: 32 }}>
       <h1>Dragon Boat Race</h1>
       <div
         style={{
