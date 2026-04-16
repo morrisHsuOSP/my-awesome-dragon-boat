@@ -122,26 +122,58 @@ export default function DragonBoatGamePage() {
         className={styles.canvas}
       />
       {showButtons && (
-        <div className={styles.actionButtons}>
-          <button
-            style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
-            onClick={() => {
-              setShowButtons(false)
-              setIsRaceRunning(false)
-              setTimerMs(0)
-              setRacePhase('countdown')
-              raceStartRef.current = null
-              document.dispatchEvent(new Event(DRAGON_BOAT_EVENTS.GAME_RESET))
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(6, 12, 24, 0.72)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: 16,
+          }}
+        >
+          <div
+            style={{
+              width: 'min(92vw, 480px)',
+              background: 'linear-gradient(180deg, rgba(12, 26, 58, 0.96) 0%, rgba(8, 16, 38, 0.96) 100%)',
+              border: '1px solid rgba(240, 192, 64, 0.45)',
+              borderRadius: 12,
+              boxShadow: '0 20px 48px rgba(0, 0, 0, 0.42)',
+              padding: '20px 22px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 14,
+              alignItems: 'center',
             }}
           >
-            Race Again
-          </button>
-          <button style={{ background: '#1a3a6a', color: '#fff' }} onClick={() => navigate('/games/dragon-boat/leaderboard')}>
-            View Leaderboard
-          </button>
-          <button style={{ background: '#24334f', color: '#fff' }} onClick={() => navigate('/')}>
-            Back To Game Hub
-          </button>
+            <h2 style={{ color: '#ffd166', margin: 0 }}>🏁 Race Finished!</h2>
+            <p style={{ color: '#f0c040', fontSize: 20, margin: 0, fontWeight: 700 }}>
+              Time: {formatTime(timerMs)}
+            </p>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                style={{ background: '#f0c040', color: '#000', fontWeight: 'bold' }}
+                onClick={() => {
+                  setShowButtons(false)
+                  setIsRaceRunning(false)
+                  setTimerMs(0)
+                  setRacePhase('countdown')
+                  raceStartRef.current = null
+                  document.dispatchEvent(new Event(DRAGON_BOAT_EVENTS.GAME_RESET))
+                }}
+              >
+                Race Again
+              </button>
+              <button style={{ background: '#1a3a6a', color: '#fff' }} onClick={() => navigate('/games/dragon-boat/leaderboard')}>
+                View Leaderboard
+              </button>
+              <button style={{ background: '#24334f', color: '#fff' }} onClick={() => navigate('/')}>
+                Back To Game Hub
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

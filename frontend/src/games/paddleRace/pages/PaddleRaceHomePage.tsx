@@ -16,7 +16,7 @@ export default function PaddleRaceHomePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh', gap: 24, paddingTop: 48 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', height: '100vh', boxSizing: 'border-box', overflow: 'auto', gap: 24, paddingTop: 32 }}>
       <h1>🌸 Paddle Race</h1>
       <p style={{ color: '#a9bfd7', maxWidth: 420, textAlign: 'center' }}>
         Paddle your dragon boat through the narrow cherry blossom river!

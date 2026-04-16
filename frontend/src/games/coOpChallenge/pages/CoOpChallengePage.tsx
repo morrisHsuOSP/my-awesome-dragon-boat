@@ -26,7 +26,7 @@ export default function CoOpChallengePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh', gap: 24, paddingTop: 48 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', height: '100vh', boxSizing: 'border-box', overflow: 'auto', gap: 24, paddingTop: 32 }}>
       <h1>Co-op Challenge</h1>
       <p style={{ color: '#a9bfd7' }}>2-player co-op mode. Work together to complete the challenge.</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 320 }}>
