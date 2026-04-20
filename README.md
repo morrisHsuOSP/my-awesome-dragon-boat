@@ -41,6 +41,7 @@ docker compose up --build
 ```
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000/docs
+- Backend startup automatically runs `alembic upgrade head` before Uvicorn.
 
 ### Without Docker (dev mode)
 
@@ -49,7 +50,42 @@ docker compose up --build
 cd backend
 pip install -r requirements.txt
 # Set DATABASE_URL env var pointing to a local Postgres instance
+alembic upgrade head
 uvicorn main:app --reload
+```
+
+## Database Migrations (Alembic)
+
+- Migration config is under `backend/alembic.ini` and `backend/alembic/`.
+- Current flow: always upgrade DB schema to latest by running `alembic upgrade head`.
+- In Docker mode this upgrade is already executed automatically during backend container startup.
+
+### Common Commands
+
+```powershell
+cd backend
+
+# Upgrade DB to latest schema
+alembic upgrade head
+
+# Show current revision
+alembic current
+
+# Show migration history
+alembic history
+```
+
+### Create a New Migration
+
+```powershell
+cd backend
+alembic revision -m "describe your schema change"
+```
+
+After editing the generated migration file, apply it with:
+
+```powershell
+alembic upgrade head
 ```
 
 **Frontend**

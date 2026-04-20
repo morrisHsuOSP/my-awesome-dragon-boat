@@ -24,11 +24,24 @@ def create_score(db: Session, user_id: int, duration_ms: int):
     return score
 
 
+def get_score_by_id(db: Session, score_id: int):
+    return db.query(models.Score).filter(models.Score.id == score_id).first()
+
+
+def get_best_score_for_user(db: Session, user_id: int):
+    return (
+        db.query(models.Score.duration_ms)
+        .filter(models.Score.user_id == user_id)
+        .order_by(asc(models.Score.duration_ms))
+        .first()
+    )
+
+
 def get_top_scores(db: Session, limit: int = 10):
     return (
         db.query(models.User.name, models.Score.duration_ms)
         .join(models.Score, models.User.id == models.Score.user_id)
-        .order_by(asc(models.Score.duration_ms))
+        .order_by(asc(models.Score.duration_ms), asc(models.Score.id))
         .limit(limit)
         .all()
     )

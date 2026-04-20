@@ -56,6 +56,7 @@ class ChallengeEvent(Base):
     old_rank = Column(Integer, nullable=False)
     new_rank = Column(Integer, nullable=False)
     delta_ms = Column(Integer, nullable=False)
+    duration_ms = Column(Integer, nullable=True)
     status = Column(String, nullable=False, default="pending")
     occurred_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
