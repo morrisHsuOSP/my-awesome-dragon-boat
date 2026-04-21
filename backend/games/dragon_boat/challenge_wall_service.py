@@ -17,15 +17,24 @@ class DragonBoatChallengeWallService:
     def __init__(self):
         self.agent = ChallengeWallAgent()
 
-    def process_new_score(self, db: Session, challenger_user_id: int):
+    def process_new_score(
+        self,
+        db: Session,
+        challenger_user_id: int,
+        score_id: int,
+        previous_best_ms: int | None = None,
+    ):
         events: list[ChallengeWallEvent] = build_challenge_wall_events(
-            db, challenger_user_id=challenger_user_id
+            db,
+            challenger_user_id=challenger_user_id,
+            score_id=score_id,
+            previous_best_ms=previous_best_ms,
         )
         if not events:
             return []
 
-        # MVP safety cap per score submission.
-        events = events[:2]
+        # One wall card per score submission keeps the feed readable.
+        events = events[:1]
         results = []
 
         for event in events:
@@ -39,6 +48,7 @@ class DragonBoatChallengeWallService:
                     old_rank=event["old_rank"],
                     new_rank=event["new_rank"],
                     delta_ms=event["delta_ms"],
+                    duration_ms=event.get("duration_ms"),
                     status="pending",
                 )
                 db.add(challenge_event)
@@ -96,9 +106,11 @@ class DragonBoatChallengeWallService:
             challenged_display = (challenged_name or "Player").split("@")[0]
             wall_message = self.agent.generate_wall_message(
                 {
+                    "event_type": event.event_type,
                     "challenger_display_name": challenger_display,
                     "challenged_display_name": challenged_display,
                     "delta_ms": event.delta_ms,
+                    "duration_ms": event.duration_ms,
                     "old_rank": event.old_rank,
                     "new_rank": event.new_rank,
                 }
@@ -113,6 +125,7 @@ class DragonBoatChallengeWallService:
                     "old_rank": event.old_rank,
                     "new_rank": event.new_rank,
                     "delta_ms": event.delta_ms,
+                    "duration_ms": event.duration_ms,
                     "headline": wall_message.headline,
                     "body": wall_message.body,
                     "tone": wall_message.tone,

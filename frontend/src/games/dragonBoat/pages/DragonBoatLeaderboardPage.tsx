@@ -15,16 +15,36 @@ export default function DragonBoatLeaderboardPage() {
   const [entries, setEntries] = useState<Entry[]>([])
   const [feedItems, setFeedItems] = useState<DragonBoatChallengeFeedItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null)
   const [error, setError] = useState('')
 
-  useEffect(() => {
+  const loadBoard = async (isManualRefresh = false) => {
+    if (isManualRefresh) {
+      setRefreshing(true)
+    } else {
+      setLoading(true)
+    }
+    setError('')
+
     Promise.all([getDragonBoatLeaderboard(), getDragonBoatChallengeFeed(5)])
       .then(([leaderboard, feed]) => {
         setEntries(leaderboard)
         setFeedItems(feed)
+        setLastUpdatedAt(new Date())
       })
       .catch(() => setError('Failed to load leaderboard.'))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        if (isManualRefresh) {
+          setRefreshing(false)
+        } else {
+          setLoading(false)
+        }
+      })
+  }
+
+  useEffect(() => {
+    loadBoard(false)
   }, [])
 
   const highlight = state?.highlight
@@ -45,6 +65,14 @@ export default function DragonBoatLeaderboardPage() {
       case 'photo_finish': return '📸'
       case 'close_chase': return '🎯'
       default: return '⚡'
+    }
+  }
+
+  const priorityLabel = (priority: DragonBoatChallengeFeedItem['priority']) => {
+    switch (priority) {
+      case 'high': return '高張力'
+      case 'medium': return '焦點'
+      default: return '一般'
     }
   }
 
@@ -76,7 +104,19 @@ export default function DragonBoatLeaderboardPage() {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <h2 style={{ margin: 0, fontSize: 20, color: '#f0c040' }}>Challenge Wall</h2>
-            <span style={{ color: '#8cc4ff', fontSize: 12 }}>AI-crafted race drama</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ color: '#8cc4ff', fontSize: 12 }}>AI-crafted race drama</span>
+              <button
+                style={{ background: '#1a3a6a', color: '#fff', fontSize: 12, padding: '4px 8px' }}
+                onClick={() => loadBoard(true)}
+                disabled={refreshing || loading}
+              >
+                {refreshing ? 'Refreshing...' : 'Refresh Wall'}
+              </button>
+            </div>
+          </div>
+          <div style={{ color: '#7ea7d1', fontSize: 12, marginBottom: 8 }}>
+            feed: {feedItems.length} item(s) | last update: {lastUpdatedAt ? lastUpdatedAt.toLocaleTimeString() : 'not loaded'}
           </div>
           {feedItems.length === 0 && !loading && !error && (
             <p style={{ color: '#a9bfd7' }}>No challenge drama yet. Start a race to create one.</p>
@@ -90,7 +130,7 @@ export default function DragonBoatLeaderboardPage() {
                     <span className={styles.scenario}>{scenarioEmoji(item.scenario)}</span>
                     <strong className={styles.headline}>{item.headline}</strong>
                     <span className={`${styles.priority} ${item.priority === 'high' ? styles.priorityHigh : styles.priorityMedium}`}>
-                      {item.priority}
+                      {priorityLabel(item.priority)}
                     </span>
                   </div>
                   <p className={styles.body}>{item.body}</p>

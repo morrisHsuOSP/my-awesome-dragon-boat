@@ -1,14 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import engine
-import models
 from games.dragon_boat.router import router as dragon_boat_router
 from games.speed_typing.router import router as speed_typing_router
 from games.vertical_game.router import router as vertical_game_router
 from games.paddle_race.router import router as paddle_race_router
 from games.co_op_challenge.router import router as co_op_challenge_router
-
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Game Hub API")
 

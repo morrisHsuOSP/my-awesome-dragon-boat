@@ -33,11 +33,18 @@ def submit_score(payload: ScoreSubmit):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
+        previous_best = service.get_best_score_for_user(db, user.id)
+        previous_best_ms = int(previous_best.duration_ms) if previous_best else None
         score = service.create_score(db, user.id, payload.duration_ms)
 
         # Wall updates are best-effort and should not block score submission.
         try:
-            challenge_wall_service.process_new_score(db, challenger_user_id=user.id)
+            challenge_wall_service.process_new_score(
+                db,
+                challenger_user_id=user.id,
+                score_id=score.id,
+                previous_best_ms=previous_best_ms,
+            )
         except Exception as exc:  # pragma: no cover
             logger.exception("dragon_boat_challenge_wall_pipeline_failed error=%s", exc)
 
