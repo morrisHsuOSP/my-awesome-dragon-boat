@@ -1,0 +1,552 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新遊戲 "My Awesome Dragon Boat" 正式上線 — Vahoo 新聞</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f3f5; color: #1a1a1a; }
+    .top-bar { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 46px; font-size: 12px; color: #555; }
+    .top-bar-left { display: flex; gap: 16px; }
+    .top-bar-left a { color: #555; text-decoration: none; }
+    .top-bar-left a:hover { color: #6001D2; }
+    .top-bar-right { display: flex; align-items: center; gap: 12px; }
+    .sign-in-btn { background: #6001D2; color: #fff; border: none; padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: 600; }
+    .sign-in-btn:hover { background: #4b00a8; }
+    header { background: #fff; padding: 8px 20px 0; border-bottom: 1px solid #ddd; }
+    .header-main { display: flex; align-items: center; justify-content: space-between; max-width: 1300px; margin: 0 auto; padding-bottom: 8px; }
+    .logo { font-size: 38px; font-weight: 900; color: #6001D2; letter-spacing: -1px; font-style: italic; text-decoration: none; }
+    .logo span { color: #ff0080; }
+    .search-bar { display: flex; align-items: center; border: 2px solid #6001D2; border-radius: 22px; overflow: hidden; width: 440px; }
+    .search-bar input { border: none; outline: none; padding: 9px 16px; font-size: 14px; flex: 1; background: #f9f9f9; }
+    .search-bar button { background: #6001D2; border: none; padding: 9px 18px; cursor: pointer; color: #fff; font-size: 16px; }
+    .search-bar button:hover { background: #4b00a8; }
+    nav { background: #fff; border-bottom: 2px solid #e8e8e8; }
+    .nav-inner { max-width: 1300px; margin: 0 auto; display: flex; gap: 4px; padding: 0 20px; overflow-x: auto; }
+    .nav-inner a { text-decoration: none; color: #444; font-size: 13.5px; font-weight: 600; padding: 10px 12px; white-space: nowrap; border-bottom: 3px solid transparent; transition: color .2s, border-color .2s; }
+    .nav-inner a:hover { color: #6001D2; border-color: #6001D2; }
+    .nav-inner a.active { color: #6001D2; border-bottom: 3px solid #6001D2; }
+    .ticker { background: #6001D2; color: #fff; font-size: 12.5px; padding: 5px 20px; display: flex; align-items: center; gap: 12px; overflow: hidden; }
+    .ticker-label { background: #ff0080; color: #fff; font-weight: 700; padding: 2px 10px; border-radius: 3px; white-space: nowrap; font-size: 11px; text-transform: uppercase; }
+    .ticker-text { white-space: nowrap; animation: scroll-left 28s linear infinite; }
+    @keyframes scroll-left { 0% { transform: translateX(100vw); } 100% { transform: translateX(-200%); } }
+    .page-wrap { max-width: 1300px; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+    .article-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .article-hero { position: relative; background: linear-gradient(135deg, #0a0a1a 0%, #1a0533 40%, #2e0066 100%); height: 400px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-art { text-align: center; position: relative; z-index: 2; }
+    .hero-dogs { font-size: 90px; line-height: 1; filter: drop-shadow(0 0 30px rgba(138,43,226,.9)); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .hero-title-overlay { color: #fff; font-size: 42px; font-weight: 900; text-shadow: 0 0 20px rgba(138,43,226,1), 0 2px 8px rgba(0,0,0,.8); letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+    .hero-title-overlay span { color: #ff0080; }
+    .hero-sub { color: #ccc; font-size: 14px; margin-top: 6px; letter-spacing: 1px; }
+    .glow1 { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(96,1,210,.5) 0%, transparent 70%); top: -60px; left: -60px; border-radius: 50%; }
+    .glow2 { position: absolute; width: 250px; height: 250px; background: radial-gradient(circle, rgba(255,0,128,.4) 0%, transparent 70%); bottom: -50px; right: -50px; border-radius: 50%; }
+    .article-badge { background: #6001D2; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
+    .article-body { padding: 28px 32px 32px; }
+    .article-category { font-size: 12px; font-weight: 700; color: #6001D2; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .article-headline { font-size: 28px; font-weight: 800; line-height: 1.25; color: #0f0f0f; margin-bottom: 10px; }
+    .article-meta { display: flex; align-items: center; gap: 14px; font-size: 12.5px; color: #777; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0; }
+    .article-meta .author { font-weight: 700; color: #444; }
+    .article-meta .dot { color: #ccc; }
+    .share-btn { margin-left: auto; display: flex; gap: 8px; }
+    .share-btn button { border: 1px solid #e0e0e0; background: #fff; border-radius: 20px; padding: 4px 14px; font-size: 12px; cursor: pointer; color: #555; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: background .15s; }
+    .share-btn button:hover { background: #f5f5f5; }
+    .article-lead { font-size: 17px; font-weight: 600; color: #222; line-height: 1.6; margin-bottom: 18px; }
+    .article-text { font-size: 15.5px; line-height: 1.75; color: #333; margin-bottom: 16px; }
+    .article-text a { color: #6001D2; text-decoration: none; }
+    .article-text a:hover { text-decoration: underline; }
+    .pull-quote { border-left: 4px solid #6001D2; background: #f7f3ff; margin: 24px 0; padding: 16px 22px; border-radius: 0 8px 8px 0; font-size: 17px; font-style: italic; font-weight: 600; color: #3a0094; }
+    .inline-img { width: 100%; border-radius: 8px; background: linear-gradient(135deg, #050510 0%, #12003b 50%, #200055 100%); height: 220px; display: flex; align-items: center; justify-content: center; margin: 22px 0; position: relative; overflow: hidden; }
+    .inline-img-inner { text-align: center; z-index: 2; position: relative; }
+    .inline-img-emoji { font-size: 52px; }
+    .inline-img-caption { font-size: 12px; color: #999; margin-top: 8px; font-style: italic; text-align: center; }
+    .grid-glow { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(96,1,210,.08) 30px, rgba(96,1,210,.08) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(96,1,210,.08) 30px, rgba(96,1,210,.08) 31px); }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .tag { background: #f0ecff; color: #6001D2; font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: background .15s; }
+    .tag:hover { background: #e0d6ff; }
+    .rating-box { background: linear-gradient(135deg, #6001D2, #9b30ff); color: #fff; border-radius: 10px; padding: 20px 24px; margin: 26px 0; display: flex; align-items: center; gap: 24px; }
+    .rating-score { font-size: 52px; font-weight: 900; line-height: 1; }
+    .rating-right .stars { font-size: 22px; letter-spacing: 3px; }
+    .rating-right p { font-size: 13px; margin-top: 4px; opacity: .85; }
+    .rating-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: .7; }
+    .comments-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid #eee; }
+    .comments-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    .comment { display: flex; gap: 12px; margin-bottom: 16px; }
+    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0; }
+    .comment-body { flex: 1; }
+    .comment-name { font-size: 13px; font-weight: 700; color: #222; }
+    .comment-time { font-size: 11px; color: #aaa; margin-left: 8px; }
+    .comment-text { font-size: 13.5px; color: #444; margin-top: 3px; line-height: 1.5; }
+    .comment-actions { display: flex; gap: 14px; margin-top: 6px; }
+    .comment-actions span { font-size: 12px; color: #888; cursor: pointer; }
+    .comment-actions span:hover { color: #6001D2; }
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .sidebar-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .sidebar-header { font-size: 13px; font-weight: 800; color: #1a1a1a; padding: 14px 16px 10px; border-bottom: 2px solid #6001D2; text-transform: uppercase; letter-spacing: .5px; }
+    .trend-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f4f4f4; cursor: pointer; transition: background .15s; }
+    .trend-item:last-child { border-bottom: none; }
+    .trend-item:hover { background: #f9f7ff; }
+    .trend-num { font-size: 18px; font-weight: 900; color: #ddd; min-width: 24px; line-height: 1; }
+    .trend-num.hot { color: #ff0080; }
+    .trend-info { flex: 1; }
+    .trend-title { font-size: 13px; font-weight: 600; color: #222; line-height: 1.4; }
+    .trend-meta { font-size: 11px; color: #aaa; margin-top: 3px; }
+    .trend-thumb { width: 56px; height: 56px; border-radius: 6px; overflow: hidden; font-size: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .thumb-game { background: linear-gradient(135deg, #1a0033, #3b0080); }
+    .thumb-tech  { background: linear-gradient(135deg, #001a33, #003b80); }
+    .thumb-sport { background: linear-gradient(135deg, #001a00, #004d00); }
+    .thumb-movie { background: linear-gradient(135deg, #1a0000, #5c0000); }
+    .thumb-music { background: linear-gradient(135deg, #1a1200, #5c4200); }
+    .ad-unit { background: linear-gradient(135deg, #f5f0ff, #ede4ff); border: 1px dashed #c4a8ff; border-radius: 8px; padding: 22px; text-align: center; }
+    .ad-unit p { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .ad-unit-inner { font-size: 32px; margin-bottom: 8px; }
+    .ad-unit h4 { font-size: 15px; font-weight: 800; color: #3a0080; margin-bottom: 4px; }
+    .ad-unit span { font-size: 12px; color: #7a4dcc; }
+    .ad-unit button { background: #6001D2; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .finance-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #f4f4f4; font-size: 13px; }
+    .finance-row:last-child { border-bottom: none; }
+    .fin-name { font-weight: 700; color: #222; }
+    .fin-ticker { font-size: 11px; color: #aaa; }
+    .fin-price { font-weight: 700; }
+    .fin-change.up { color: #00a34f; font-size: 12px; }
+    .fin-change.down { color: #d0021b; font-size: 12px; }
+    .weather-widget { padding: 16px; background: linear-gradient(135deg, #1a0533, #2e0066); color: #fff; border-radius: 0 0 8px 8px; text-align: center; }
+    .weather-emoji { font-size: 44px; }
+    .weather-temp { font-size: 36px; font-weight: 900; margin: 4px 0; }
+    .weather-desc { font-size: 14px; opacity: .8; }
+    .weather-location { font-size: 12px; opacity: .6; margin-top: 4px; }
+    .weather-row { display: flex; justify-content: space-around; margin-top: 14px; border-top: 1px solid rgba(255,255,255,.15); padding-top: 12px; }
+    .weather-day { font-size: 11px; opacity: .7; }
+    .weather-day-emoji { font-size: 18px; display: block; margin: 4px 0; }
+    .weather-day-temp { font-size: 13px; font-weight: 700; }
+    .more-item { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f4f4f4; cursor: pointer; transition: background .15s; }
+    .more-item:last-child { border-bottom: none; }
+    .more-item:hover { background: #f9f7ff; }
+    .more-thumb { width: 72px; height: 54px; border-radius: 6px; font-size: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .more-info { flex: 1; }
+    .more-title { font-size: 13px; font-weight: 600; color: #222; line-height: 1.4; }
+    .more-meta { font-size: 11px; color: #aaa; margin-top: 4px; }
+    footer { background: #1a1a1a; color: #aaa; padding: 32px 20px 20px; margin-top: 40px; font-size: 12.5px; }
+    .footer-inner { max-width: 1300px; margin: 0 auto; }
+    .footer-logo { font-size: 28px; font-weight: 900; color: #6001D2; font-style: italic; margin-bottom: 16px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 20px; }
+    .footer-links a { color: #aaa; text-decoration: none; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { color: #666; font-size: 11px; border-top: 1px solid #333; padding-top: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- 頂部工具列 -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <a href="#">郵件</a>
+    <a href="#">財經</a>
+    <a href="#">體育</a>
+    <a href="#">娛樂</a>
+    <a href="#">生活</a>
+    <a href="#">購物</a>
+  </div>
+  <div class="top-bar-right">
+    <span>週一，2026 年 4 月 21 日</span>
+    <button class="sign-in-btn">登入</button>
+  </div>
+</div>
+
+<!-- 頁首 -->
+<header>
+  <div class="header-main">
+    <a href="#" class="logo">V<span>!</span>ahoo</a>
+    <div class="search-bar">
+      <input type="text" placeholder="搜尋新聞、財經、體育…" />
+      <button>🔍</button>
+    </div>
+  </div>
+</header>
+
+<!-- 導覽列 -->
+<nav>
+  <div class="nav-inner">
+    <a href="#">首頁</a>
+    <a href="#" class="active">新聞</a>
+    <a href="#">財經</a>
+    <a href="#">體育</a>
+    <a href="#">娛樂</a>
+    <a href="#">生活</a>
+    <a href="#">科技</a>
+    <a href="#">遊戲</a>
+    <a href="#">天氣</a>
+    <a href="#">更多 ▾</a>
+  </div>
+</nav>
+
+<!-- 即時新聞跑馬燈 -->
+<div class="ticker">
+  <span class="ticker-label">即時</span>
+  <span class="ticker-text">
+    🐉 "My Awesome Dragon Boat" 創下預購紀錄，首 24 小時下載量突破 4.2 million &nbsp;•&nbsp;
+    🚣 開發團隊確認首發共有 8 支龍舟隊伍可供選擇 &nbsp;•&nbsp;
+    🎮 據內部消息，My Awesome Dragon Boat 續作已獲正式核准開發 &nbsp;•&nbsp;
+    📈 DragonWave Studios 股價在發表後飆升 18% &nbsp;•&nbsp;
+    🏆 各大媒體給予 My Awesome Dragon Boat 94/100 的佳績
+  </span>
+</div>
+
+<!-- 主要內容 -->
+<div class="page-wrap">
+
+  <!-- 文章 -->
+  <main>
+    <div class="article-card">
+
+      <!-- 英雄橫幅 -->
+      <div class="article-hero">
+        <div class="glow1"></div>
+        <div class="glow2"></div>
+        <div class="hero-art">
+          <div class="hero-dogs">🐉🚣‍♂️🌊</div>
+          <div class="hero-title-overlay">My Awesome <span>Dragon Boat</span></div>
+          <div class="hero-sub">2026 年最受矚目遊戲</div>
+        </div>
+      </div>
+
+      <!-- 文章內文 -->
+      <div class="article-body">
+        <div class="article-category">遊戲 · 科技</div>
+        <h1 class="article-headline">新遊戲 "My Awesome Dragon Boat" 正式上線 — 並已創下多項破紀錄佳績</h1>
+
+        <div class="article-meta">
+          <span class="author">撰文：Jordan Reeves</span>
+          <span class="dot">•</span>
+          <span>Vahoo Gaming</span>
+          <span class="dot">•</span>
+          <span>2026 年 4 月 21 日 · 上午 9:42 EDT</span>
+          <span class="dot">•</span>
+          <span>閱讀約 7 分鐘</span>
+          <div class="share-btn">
+            <button>👍 讚</button>
+            <button>🔗 分享</button>
+            <button>📌 儲存</button>
+          </div>
+        </div>
+
+        <p class="article-lead">
+          DragonWave Studios 正式推出備受期待的動作競速遊戲
+          <em>"My Awesome Dragon Boat"</em> — 玩家將率領傳奇龍舟隊伍，在神話般的水域上奮力競速、爭奪榮耀。
+          遊戲上線數小時後，便登頂各大平台排行榜首。
+        </p>
+
+        <p class="article-text">
+          歷經近三年的預告、宣傳片及試玩片段的期盼，
+          <strong>"My Awesome Dragon Boat"</strong> 終於正式登場，遊戲圈為之瘋狂。
+          遊戲同步在 PlayStation 6、Xbox Series X|S、Nintendo Switch 2 以及 PC（Steam）上架，
+          首 24 小時便創下驚人的 <strong>4.2 million 次下載</strong>，締造 DragonWave Studios 有史以來最輝煌的單日發行紀錄。
+        </p>
+
+        <p class="article-text">
+          遊戲玩法充滿刺激：玩家可從 8 支各具特色的傳奇龍舟隊伍中擇一出賽。
+          <a href="#">Jade Serpent</a> 隊擅長召喚療癒河霧，<a href="#">Storm Riders</a> 能駕馭洶湧的急流浪潮，
+          而廣受粉絲喜愛的 <a href="#">Thunder Drummers</a> 則可發動節奏爆發（Dragon Surge），
+          將對手直接擊飛出水面。
+        </p>
+
+        <div class="pull-quote">
+          「我們希望玩家在按下開始的那一刻就熱血沸騰。龍舟競速代表著團結、勇氣與河流的咆哮 —
+          這正是 My Awesome Dragon Boat 的情感核心。」
+          <br /><br />— Maya Chen，創意總監，DragonWave Studios
+        </div>
+
+        <p class="article-text">
+          My Awesome Dragon Boat 的遊戲世界橫跨五大壯闊河域 — 從雲霧繚繞的山谷峽谷，到霓虹璀璨的港灣城市 —
+          每個區域都擁有各自的勁敵派系與深厚的節慶傳說。玩家可組建多達八名划手的隊伍，
+          於比賽中隨機應變切換陣型，並發動名為 <strong>"Dragon Surges"</strong> 的同步猛攻。
+        </p>
+
+        <!-- 遊戲截圖示意 -->
+        <div class="inline-img">
+          <div class="grid-glow"></div>
+          <div class="inline-img-inner">
+            <div class="inline-img-emoji">🌊🐉🚣‍♂️🥁🎆</div>
+            <p style="color:#9b6eff;font-size:13px;margin-top:8px;font-weight:600;">
+              遊戲截圖：「Harbour Festival」關卡 — 四人合作模式
+            </p>
+          </div>
+        </div>
+        <p class="inline-img-caption">My Awesome Dragon Boat 的「Harbour Festival」關卡展現了遊戲鮮豔奪目的視覺風格。（DragonWave Studios）</p>
+
+        <p class="article-text">
+          評論界對本作的畫面表現、電影般的敘事以及出乎意料深度的競速機制讚不絕口。
+          知名媒體 <em>GameSpot</em> 稱其為
+          <strong>「自 Wave Race Legends 以來最令人熱血的水上運動遊戲」</strong>，
+          而 IGN 更給出罕見的 <strong>9.5 分（滿分 10 分）</strong>，並特別盛讚合作多人模式為 2026 年的遊戲亮點。
+        </p>
+
+        <!-- 評分區塊 -->
+        <div class="rating-box">
+          <div class="rating-score">9.4</div>
+          <div class="rating-right">
+            <div class="rating-label">Vahoo Gaming 綜合評分</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p>根據 38,400 則已驗證玩家評論</p>
+          </div>
+        </div>
+
+        <p class="article-text">
+          本作另設有約 40 小時的完整配音劇情模式，以及通關後的自由划行模式、季節性節慶活動，
+          還有專為年輕玩家打造的免費體驗模式 <strong>"Beginner Paddling"</strong>。
+          DragonWave 已公布延伸至 2027 年的豐富內容藍圖，涵蓋兩款大型故事 DLC 及 PvP 競技錦標賽模式。
+        </p>
+
+        <p class="article-text">
+          從技術層面而言，My Awesome Dragon Boat 對硬體效能的要求達到極限。
+          遊戲在 PlayStation 6 與 Xbox Series X 上支援原生 4K / 120fps，
+          並搭載自研的流體模擬引擎 — 名為 <strong>WaveForge™</strong> —
+          能即時渲染每一道水花、漣漪與漩渦，並依據船速、天候條件及 Dragon Surge 技能作出逼真的物理反應。
+        </p>
+
+        <p class="article-text">
+          DragonWave 的股票（<a href="#">DRWV</a>）在發布消息後，盤前交易便上漲 18%，
+          將這家獨立工作室的估值推高至約 <strong>$2.6 billion</strong> —
+          對一支僅有 210 名開發者的團隊而言，堪稱令人驚嘆的里程碑。
+          工作室已確認續作正處於早期開發階段，並在社群帳號發佈一則神秘預告，
+          僅寫著：<em>"The River calls."</em>
+        </p>
+
+        <p class="article-text">
+          <strong>"My Awesome Dragon Boat"</strong> 現已正式發售。
+          標準版定價 $69.99，豪華版（含 <em>Legendary Wave Pack</em> DLC 套組）定價 $89.99。
+        </p>
+
+        <div class="tag-list">
+          <span class="tag">#MyAwesomeDragonBoat</span>
+          <span class="tag">#遊戲</span>
+          <span class="tag">#DragonWaveStudios</span>
+          <span class="tag">#新作上市</span>
+          <span class="tag">#PS6</span>
+          <span class="tag">#Xbox</span>
+          <span class="tag">#PCGaming</span>
+          <span class="tag">#獨立遊戲</span>
+        </div>
+
+        <!-- 留言區 -->
+        <div class="comments-section">
+          <h3>熱門留言（1,847 則）</h3>
+
+          <div class="comment">
+            <div class="comment-avatar" style="background:#6001D2;">AK</div>
+            <div class="comment-body">
+              <span class="comment-name">Alex K.</span>
+              <span class="comment-time">2 小時前</span>
+              <p class="comment-text">等了三年終於來了！！Thunder Drummers 的 Dragon Surge 技能根本是 BUG 等級的強，但超好玩 😂🐉</p>
+              <div class="comment-actions">
+                <span>👍 2.4k</span>
+                <span>回覆</span>
+                <span>分享</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comment">
+            <div class="comment-avatar" style="background:#ff0080;">SM</div>
+            <div class="comment-body">
+              <span class="comment-name">SkylerM</span>
+              <span class="comment-time">3 小時前</span>
+              <p class="comment-text">WaveForge 的水流效果真的太震撼了，我的龍舟破浪的水花完全像真實拍攝，看到有點感動。</p>
+              <div class="comment-actions">
+                <span>👍 1.8k</span>
+                <span>回覆</span>
+                <span>分享</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comment">
+            <div class="comment-avatar" style="background:#00a34f;">JP</div>
+            <div class="comment-body">
+              <span class="comment-name">JamieP</span>
+              <span class="comment-time">4 小時前</span>
+              <p class="comment-text">豪華版 $89.99 是有點貴，但 Legendary Wave Pack 的內容量超乎預期，完全值回票價。</p>
+              <div class="comment-actions">
+                <span>👍 987</span>
+                <span>回覆</span>
+                <span>分享</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 側邊欄 -->
+  <aside class="sidebar">
+
+    <!-- 熱門話題 -->
+    <div class="sidebar-card">
+      <div class="sidebar-header">🔥 熱門話題</div>
+
+      <div class="trend-item">
+        <span class="trend-num hot">1</span>
+        <div class="trend-info">
+          <div class="trend-title">My Awesome Dragon Boat 首 24 小時售出 4.2M 份</div>
+          <div class="trend-meta">遊戲 · 2 小時前</div>
+        </div>
+        <div class="trend-thumb thumb-game">🐉</div>
+      </div>
+
+      <div class="trend-item">
+        <span class="trend-num hot">2</span>
+        <div class="trend-info">
+          <div class="trend-title">DragonWave Studios 股價於開盤後飆升 18%</div>
+          <div class="trend-meta">財經 · 3 小時前</div>
+        </div>
+        <div class="trend-thumb thumb-tech">📈</div>
+      </div>
+
+      <div class="trend-item">
+        <span class="trend-num">3</span>
+        <div class="trend-info">
+          <div class="trend-title">NASA 確認新深太空任務發射日期</div>
+          <div class="trend-meta">科學 · 5 小時前</div>
+        </div>
+        <div class="trend-thumb thumb-tech">🚀</div>
+      </div>
+
+      <div class="trend-item">
+        <span class="trend-num">4</span>
+        <div class="trend-info">
+          <div class="trend-title">2026 World Cup 分組抽籤結果出爐</div>
+          <div class="trend-meta">體育 · 6 小時前</div>
+        </div>
+        <div class="trend-thumb thumb-sport">⚽</div>
+      </div>
+
+      <div class="trend-item">
+        <span class="trend-num">5</span>
+        <div class="trend-info">
+          <div class="trend-title">Marvel 公開《Infinite Horizon》正式預告</div>
+          <div class="trend-meta">娛樂 · 8 小時前</div>
+        </div>
+        <div class="trend-thumb thumb-movie">🎬</div>
+      </div>
+    </div>
+
+    <!-- 廣告 -->
+    <div class="ad-unit">
+      <p>廣告</p>
+      <div class="ad-unit-inner">🐉</div>
+      <h4>免費體驗 My Awesome Dragon Boat！</h4>
+      <span>立即試玩 Beginner Paddling 模式，無需購買</span>
+      <br />
+      <button>立即遊玩 →</button>
+    </div>
+
+    <!-- 市場行情 -->
+    <div class="sidebar-card">
+      <div class="sidebar-header">📊 市場行情</div>
+      <div class="finance-row">
+        <div><div class="fin-name">DRWV</div><div class="fin-ticker">DragonWave Studios</div></div>
+        <div><div class="fin-price">$84.40</div><div class="fin-change up">▲ +18.2%</div></div>
+      </div>
+      <div class="finance-row">
+        <div><div class="fin-name">S&amp;P 500</div><div class="fin-ticker">指數</div></div>
+        <div><div class="fin-price">5,892</div><div class="fin-change up">▲ +0.4%</div></div>
+      </div>
+      <div class="finance-row">
+        <div><div class="fin-name">NASDAQ</div><div class="fin-ticker">指數</div></div>
+        <div><div class="fin-price">18,340</div><div class="fin-change down">▼ −0.1%</div></div>
+      </div>
+      <div class="finance-row">
+        <div><div class="fin-name">BTC-USD</div><div class="fin-ticker">Bitcoin</div></div>
+        <div><div class="fin-price">$94,210</div><div class="fin-change up">▲ +2.8%</div></div>
+      </div>
+    </div>
+
+    <!-- 天氣 -->
+    <div class="sidebar-card">
+      <div class="sidebar-header">🌤 天氣預報</div>
+      <div class="weather-widget">
+        <div class="weather-emoji">⛅</div>
+        <div class="weather-temp">72°F</div>
+        <div class="weather-desc">局部多雲</div>
+        <div class="weather-location">📍 New York, NY</div>
+        <div class="weather-row">
+          <div><span class="weather-day">週二</span><span class="weather-day-emoji">🌧</span><span class="weather-day-temp">65°</span></div>
+          <div><span class="weather-day">週三</span><span class="weather-day-emoji">☀️</span><span class="weather-day-temp">78°</span></div>
+          <div><span class="weather-day">週四</span><span class="weather-day-emoji">⛅</span><span class="weather-day-temp">74°</span></div>
+          <div><span class="weather-day">週五</span><span class="weather-day-emoji">🌩</span><span class="weather-day-temp">68°</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 更多遊戲新聞 -->
+    <div class="sidebar-card">
+      <div class="sidebar-header">🎮 更多遊戲新聞</div>
+
+      <div class="more-item">
+        <div class="more-thumb thumb-game">🐉</div>
+        <div class="more-info">
+          <div class="more-title">Dragon Era 4 公布五月公測日期</div>
+          <div class="more-meta">GameSpot · 4 小時前</div>
+        </div>
+      </div>
+
+      <div class="more-item">
+        <div class="more-thumb thumb-tech">🕶️</div>
+        <div class="more-info">
+          <div class="more-title">VR 頭戴裝置銷量於 2026 年第一季創歷史新高</div>
+          <div class="more-meta">TechCrunch · 5 小時前</div>
+        </div>
+      </div>
+
+      <div class="more-item">
+        <div class="more-thumb thumb-game">🏎️</div>
+        <div class="more-info">
+          <div class="more-title">RacePulse 7 更新 1.4 版本，新增賽道與車款</div>
+          <div class="more-meta">IGN · 7 小時前</div>
+        </div>
+      </div>
+
+      <div class="more-item">
+        <div class="more-thumb thumb-movie">🤖</div>
+        <div class="more-info">
+          <div class="more-title">AI 生成 NPC 引發遊戲開發界廣泛討論</div>
+          <div class="more-meta">Kotaku · 9 小時前</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- 頁尾 -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">V!ahoo</div>
+    <div class="footer-links">
+      <a href="#">關於我們</a>
+      <a href="#">廣告刊登</a>
+      <a href="#">使用條款</a>
+      <a href="#">隱私政策</a>
+      <a href="#">隱私設定</a>
+      <a href="#">說明中心</a>
+      <a href="#">意見回饋</a>
+      <a href="#">網站地圖</a>
+      <a href="#">Vahoo 新聞</a>
+      <a href="#">Vahoo 財經</a>
+      <a href="#">Vahoo 體育</a>
+      <a href="#">Vahoo 娛樂</a>
+      <a href="#">Vahoo 郵件</a>
+    </div>
+    <p class="footer-copy">
+      © 2026 Vahoo. 保留所有權利。&nbsp;|&nbsp;
+      本頁面為設計展示用途之虛構模擬頁面。
+      "My Awesome Dragon Boat" 及所有相關內容均屬虛構。
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
